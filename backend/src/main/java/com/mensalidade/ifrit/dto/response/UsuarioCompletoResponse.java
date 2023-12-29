@@ -1,40 +1,27 @@
-package com.mensalidade.ifrit.models;
+package com.mensalidade.ifrit.dto.response;
 
 import com.mensalidade.ifrit.models.enums.Perfil;
-import jakarta.persistence.*;
+import org.springframework.hateoas.RepresentationModel;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-@Entity(name = "usuarios")
-public class Usuario {
+public class UsuarioCompletoResponse extends RepresentationModel<UsuarioCompletoResponse> implements Serializable {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
-    @Column(name = "login", nullable = false)
     private String login;
 
-    @Column(name = "nome", nullable = false)
     private String nome;
 
-    @Column(name = "senha", nullable = false)
-    private String senha;
-
-    @Column(name = "email")
     private String email;
 
-    @Column(name = "telefone")
     private String telefone;
 
-    @Column(name = "celular")
     private String celular;
 
-    @Column(name ="perfil", nullable = false)
-    @Enumerated(EnumType.STRING)
     private Perfil perfil;
 
-    @Column(name = "ativo")
     private boolean ativo;
 
     public String getId() {
@@ -50,7 +37,7 @@ public class Usuario {
     }
 
     public void setLogin(String login) {
-        this.login = login.toUpperCase();
+        this.login = login;
     }
 
     public String getNome() {
@@ -59,14 +46,6 @@ public class Usuario {
 
     public void setNome(String nome) {
         this.nome = nome;
-    }
-
-    public String getSenha() {
-        return senha;
-    }
-
-    public void setSenha(String senha) {
-        this.senha = senha;
     }
 
     public String getEmail() {
@@ -113,16 +92,18 @@ public class Usuario {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
 
-        Usuario usuario = (Usuario) o;
+        UsuarioCompletoResponse that = (UsuarioCompletoResponse) o;
 
-        if (!Objects.equals(id, usuario.id)) return false;
-        return Objects.equals(login, usuario.login);
+        if (!Objects.equals(id, that.id)) return false;
+        return Objects.equals(login, that.login);
     }
 
     @Override
     public int hashCode() {
-        int result = id != null ? id.hashCode() : 0;
+        int result = super.hashCode();
+        result = 31 * result + (id != null ? id.hashCode() : 0);
         result = 31 * result + (login != null ? login.hashCode() : 0);
         return result;
     }

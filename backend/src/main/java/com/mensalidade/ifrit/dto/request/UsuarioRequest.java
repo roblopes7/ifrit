@@ -1,41 +1,35 @@
-package com.mensalidade.ifrit.models;
+package com.mensalidade.ifrit.dto.request;
 
 import com.mensalidade.ifrit.models.enums.Perfil;
-import jakarta.persistence.*;
 
+import javax.validation.constraints.NotBlank;
+import java.io.Serializable;
 import java.util.Objects;
 
-@Entity(name = "usuarios")
-public class Usuario {
+public class UsuarioRequest implements Serializable {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
-    @Column(name = "login", nullable = false)
+    @NotBlank
     private String login;
 
-    @Column(name = "nome", nullable = false)
+    @NotBlank
     private String nome;
 
-    @Column(name = "senha", nullable = false)
+    @NotBlank
     private String senha;
 
-    @Column(name = "email")
     private String email;
 
-    @Column(name = "telefone")
     private String telefone;
 
-    @Column(name = "celular")
     private String celular;
 
-    @Column(name ="perfil", nullable = false)
-    @Enumerated(EnumType.STRING)
+    @NotBlank
     private Perfil perfil;
 
-    @Column(name = "ativo")
     private boolean ativo;
+
 
     public String getId() {
         return id;
@@ -113,16 +107,18 @@ public class Usuario {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
 
-        Usuario usuario = (Usuario) o;
+        UsuarioRequest that = (UsuarioRequest) o;
 
-        if (!Objects.equals(id, usuario.id)) return false;
-        return Objects.equals(login, usuario.login);
+        if (!Objects.equals(id, that.id)) return false;
+        return Objects.equals(login, that.login);
     }
 
     @Override
     public int hashCode() {
-        int result = id != null ? id.hashCode() : 0;
+        int result = super.hashCode();
+        result = 31 * result + (id != null ? id.hashCode() : 0);
         result = 31 * result + (login != null ? login.hashCode() : 0);
         return result;
     }

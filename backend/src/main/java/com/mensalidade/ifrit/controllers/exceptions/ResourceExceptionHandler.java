@@ -1,5 +1,6 @@
 package com.mensalidade.ifrit.controllers.exceptions;
 
+import com.mensalidade.ifrit.services.exceptions.ObjetoCadastradoException;
 import com.mensalidade.ifrit.services.exceptions.ObjetoNaoEncontrado;
 import com.mensalidade.ifrit.services.exceptions.ValorAcimaException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -24,4 +25,12 @@ public class ResourceExceptionHandler {
         StandardError se = new StandardError(HttpStatus.BAD_REQUEST.value(), e.getMessage(), System.currentTimeMillis());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(se);
     }
+
+    @ExceptionHandler(ObjetoCadastradoException.class)
+    public ResponseEntity<StandardError> objetoCadastrado(ObjetoCadastradoException e,
+                                                    HttpServletRequest request){
+        StandardError se = new StandardError(HttpStatus.BAD_REQUEST.value(), e.getMessage(), System.currentTimeMillis());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(se);
+    }
+
 }

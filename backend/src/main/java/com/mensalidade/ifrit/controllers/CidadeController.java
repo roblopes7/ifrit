@@ -66,6 +66,7 @@ public class CidadeController {
         return new ResponseEntity<>(responsePage, HttpStatus.OK);
     }
 
+    //Operação post por buscar na base do IBGE e cadastrar/atualizar cidades
     @PostMapping("/consultar-ibge")
     @Operation(summary = "Consultar cidades pelo IBGE", method = "GET")
     @ResponseStatus(HttpStatus.OK)
