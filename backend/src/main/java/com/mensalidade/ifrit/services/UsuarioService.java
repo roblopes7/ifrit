@@ -30,7 +30,7 @@ public class UsuarioService {
     }
 
     public UsuarioResponse cadastrarUsuario(UsuarioRequest request) {
-        Usuario usuario = usuarioRepository.findByLogin(request.getLogin());
+        Usuario usuario = (Usuario) usuarioRepository.findByLogin(request.getLogin());
         if(usuario != null){
             throw new ObjetoCadastradoException("Login já utilizado");
         }
@@ -45,7 +45,7 @@ public class UsuarioService {
     }
 
     public UsuarioCompletoResponse findByLogin(String login) {
-        Usuario usuario = usuarioRepository.findByLogin(login.toUpperCase());
+        Usuario usuario = (Usuario) usuarioRepository.findByLogin(login.toUpperCase());
         if(usuario != null){
             return modelMapper.map(usuario, UsuarioCompletoResponse.class);
         }
@@ -65,7 +65,7 @@ public class UsuarioService {
     }
 
     public UsuarioCompletoResponse atualizarUsuario(UsuarioRequest request) {
-        Usuario usuarioLogin = usuarioRepository.findByLogin(request.getLogin());
+        Usuario usuarioLogin = (Usuario) usuarioRepository.findByLogin(request.getLogin());
 
         if(usuarioLogin == null || usuarioLogin.getId().equals(request.getId())){
             return modelMapper.map(salvarUsuario(request), UsuarioCompletoResponse.class);

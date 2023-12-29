@@ -2,11 +2,16 @@ package com.mensalidade.ifrit.models;
 
 import com.mensalidade.ifrit.models.enums.Perfil;
 import jakarta.persistence.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.Collection;
+import java.util.List;
 import java.util.Objects;
 
 @Entity(name = "usuarios")
-public class Usuario {
+public class Usuario implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -30,7 +35,7 @@ public class Usuario {
     @Column(name = "celular")
     private String celular;
 
-    @Column(name ="perfil", nullable = false)
+    @Column(name = "perfil", nullable = false)
     @Enumerated(EnumType.STRING)
     private Perfil perfil;
 
@@ -125,5 +130,53 @@ public class Usuario {
         int result = id != null ? id.hashCode() : 0;
         result = 31 * result + (login != null ? login.hashCode() : 0);
         return result;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        if (Perfil.ADMIN.equals(this.perfil)) {
+            return List.of(
+                    new SimpleGrantedAuthority(Perfil.ADMIN.name()),
+                    new SimpleGrantedAuthority(Perfil.COMERCIAL.name()),
+                            new SimpleGrantedAuthority(Perfil.FINANCEIRO.name()));
+        }
+
+        if (Perfil.FINANCEIRO.equals(this.perfil)) {
+            return List.of(
+                    new SimpleGrantedAuthority(Perfil.FINANCEIRO.name()),
+                    new SimpleGrantedAuthority(Perfil.COMERCIAL.name()));
+        }
+
+        return List.of(new SimpleGrantedAuthority(Perfil.COMERCIAL.name()));
+    }
+
+    @Override
+    public String getPassword() {
+        return getSenha();
+    }
+
+    @Override
+    public String getUsername() {
+        return getLogin();
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return isAtivo();
     }
 }

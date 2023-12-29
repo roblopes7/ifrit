@@ -9,6 +9,7 @@ import com.mensalidade.ifrit.requests.QueryParamRequest;
 import com.mensalidade.ifrit.services.UsuarioService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -36,7 +37,7 @@ public class UsuarioController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(summary = "Cadastrar um usuário", method = "POST")
-    public ResponseEntity<UsuarioResponse> cadastarUsuario(@RequestBody UsuarioRequest request) {
+    public ResponseEntity<UsuarioResponse> cadastarUsuario(@RequestBody @Valid UsuarioRequest request) {
         UsuarioResponse response = usuarioService.cadastrarUsuario(request);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
                 .buildAndExpand(response.getId()).toUri();
@@ -74,7 +75,7 @@ public class UsuarioController {
     @PutMapping("/{id}")
     @Operation(summary = "Atualizar um usuário", method = "PUT")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<UsuarioCompletoResponse> atualizarUsuario(@RequestBody UsuarioRequest request){
+    public ResponseEntity<UsuarioCompletoResponse> atualizarUsuario(@RequestBody @Valid UsuarioRequest request){
         UsuarioCompletoResponse response = usuarioService.atualizarUsuario(request);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
                 .buildAndExpand(response.getId()).toUri();
