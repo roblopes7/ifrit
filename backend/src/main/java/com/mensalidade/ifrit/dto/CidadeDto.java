@@ -15,6 +15,17 @@ public class CidadeDto extends RepresentationModel<CidadeDto> implements Seriali
     @NotBlank
     private String pais;
 
+    public CidadeDto() {
+    }
+
+    public CidadeDto(String id, String nome, String pais, String uf, String codigoIbge) {
+        this.id = id;
+        this.nome = nome;
+        this.codigoIbge = codigoIbge;
+        this.uf = uf;
+        this.pais = pais;
+    }
+
     public String getId() {
         return id;
     }

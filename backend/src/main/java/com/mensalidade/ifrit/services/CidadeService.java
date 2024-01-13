@@ -6,6 +6,7 @@ import com.mensalidade.ifrit.repositories.CidadeRepository;
 import com.mensalidade.ifrit.requests.CidadeIbgeRequest;
 import com.mensalidade.ifrit.services.exceptions.ObjetoNaoEncontrado;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -26,6 +27,7 @@ public class CidadeService {
     private final CidadeRepository cidadeRepository;
     private final ModelMapper modelMapper;
 
+    @Autowired
     public CidadeService(CidadeRepository cidadeRepository, ModelMapper modelMapper) {
         this.cidadeRepository = cidadeRepository;
         this.modelMapper = modelMapper;

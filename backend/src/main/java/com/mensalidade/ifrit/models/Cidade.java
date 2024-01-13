@@ -7,7 +7,7 @@ public class Cidade {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    private String String;
+    private String id;
 
     @Column(name = "nome")
     private String nome;
@@ -21,13 +21,24 @@ public class Cidade {
     @Column(name = "pais")
     private String pais;
 
+    public Cidade() {
+    }
+
+    public Cidade(String id, String nome, String pais, String uf, String codigoIbge) {
+        this.id = id;
+        this.nome = nome;
+        this.pais = pais;
+        this.uf = uf;
+        this.codigoIbge = codigoIbge;
+    }
+
 
     public String getId() {
-        return String;
+        return id;
     }
 
     public void setId(String id) {
-        this.String = id;
+        this.id = id;
     }
 
     public String getNome() {
@@ -60,5 +71,10 @@ public class Cidade {
 
     public void setPais(String pais) {
         this.pais = pais;
+    }
+
+    @Override
+    public String toString() {
+        return super.toString();
     }
 }
