@@ -6,14 +6,12 @@ import jakarta.persistence.*;
 public class Cidade {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(name = "id")
     private String id;
 
     @Column(name = "nome")
     private String nome;
 
-    @Column(name = "codigo_ibge")
-    private String codigoIbge;
 
     @Column(name = ("uf"))
     private String uf;
@@ -24,20 +22,10 @@ public class Cidade {
     public Cidade() {
     }
 
-    public Cidade(String id, String nome, String pais, String uf, String codigoIbge) {
-        this.id = id;
+    public Cidade( String id, String nome, String pais, String uf) {
         this.nome = nome;
         this.pais = pais;
         this.uf = uf;
-        this.codigoIbge = codigoIbge;
-    }
-
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
         this.id = id;
     }
 
@@ -49,12 +37,12 @@ public class Cidade {
         this.nome = nome;
     }
 
-    public String getCodigoIbge() {
-        return codigoIbge;
+    public String getId() {
+        return id;
     }
 
-    public void setCodigoIbge(String codigoIbge) {
-        this.codigoIbge = codigoIbge;
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getUf() {

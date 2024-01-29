@@ -10,7 +10,6 @@ public class CidadeDto extends RepresentationModel<CidadeDto> implements Seriali
     private String id;
     @NotBlank
     private String nome;
-    private String codigoIbge;
     private String uf;
     @NotBlank
     private String pais;
@@ -18,10 +17,9 @@ public class CidadeDto extends RepresentationModel<CidadeDto> implements Seriali
     public CidadeDto() {
     }
 
-    public CidadeDto(String id, String nome, String pais, String uf, String codigoIbge) {
+    public CidadeDto(String id, String nome, String pais, String uf) {
         this.id = id;
         this.nome = nome;
-        this.codigoIbge = codigoIbge;
         this.uf = uf;
         this.pais = pais;
     }
@@ -40,14 +38,6 @@ public class CidadeDto extends RepresentationModel<CidadeDto> implements Seriali
 
     public void setNome(String nome) {
         this.nome = nome;
-    }
-
-    public String getCodigoIbge() {
-        return codigoIbge;
-    }
-
-    public void setCodigoIbge(String codigoIbge) {
-        this.codigoIbge = codigoIbge;
     }
 
     public String getUf() {

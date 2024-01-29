@@ -42,6 +42,21 @@ public class Usuario implements UserDetails {
     @Column(name = "ativo")
     private boolean ativo;
 
+    public Usuario() {
+    }
+
+    public Usuario(String id, String login, String nome, String senha, String email, String telefone, String celular, Perfil perfil, boolean ativo) {
+        this.id = id;
+        this.login = login;
+        this.nome = nome;
+        this.senha = senha;
+        this.email = email;
+        this.telefone = telefone;
+        this.celular = celular;
+        this.perfil = perfil;
+        this.ativo = ativo;
+    }
+
     public String getId() {
         return id;
     }

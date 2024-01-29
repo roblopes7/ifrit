@@ -4,6 +4,7 @@ import com.mensalidade.ifrit.dto.CidadeDto;
 import com.mensalidade.ifrit.models.Cidade;
 import com.mensalidade.ifrit.repositories.CidadeRepository;
 import com.mensalidade.ifrit.services.exceptions.ObjetoNaoEncontrado;
+import com.mensalidade.ifrit.utils.CidadeTest;
 import com.mensalidade.ifrit.utils.Util;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -15,15 +16,12 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.ResponseEntity;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -32,10 +30,10 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 
-class CidadeServiceTest {
+class CidadeTestServiceTest {
 
     private final String CIDADE_NAO_ENCONTRADA = "Cidade não encontrada.";
-    com.mensalidade.ifrit.utils.Cidade utilCidade = new com.mensalidade.ifrit.utils.Cidade();
+    CidadeTest utilCidadeTest = new CidadeTest();
     Util util = new Util();
 
     @Mock
@@ -59,16 +57,17 @@ class CidadeServiceTest {
     @DisplayName("Cadastro Cidade com sucesso")
     void cadastrarCidade() {
         when(cidadeRepository.save(any(Cidade.class)))
-                .thenReturn(new Cidade(util.getUiidPadrao(), "Cidade Teste", "Brasil", "PR", "123456789"));
-        CidadeDto cidadeCadastrada = cidadeService.cadastrarCidade(utilCidade.criarCidade());
+                .thenReturn(new Cidade(util.getUiidPadrao(), "Cidade Teste", "Brasil", "PR"));
+        CidadeDto cidadeCadastrada = cidadeService.cadastrarCidade(utilCidadeTest.criarCidade());
 
         verify(cidadeRepository, Mockito.times(1)).save(any());
         Assertions.assertThat(cidadeCadastrada.getId()).isEqualTo(util.getUiidPadrao());
     }
 
     @Test
+    @DisplayName("Trazer cidades paginadas")
     void carregarTodasCidades() {
-        Page<Cidade> cidadePage = new PageImpl<>(utilCidade.cidades(), util.getPagePadrao(), utilCidade.cidades().size());
+        Page<Cidade> cidadePage = new PageImpl<>(utilCidadeTest.cidades(), util.getPagePadrao(), utilCidadeTest.cidades().size());
         when(cidadeRepository.findAll(any(Pageable.class))).thenReturn(cidadePage);
 
         Page<CidadeDto> result = cidadeService.carregarTodasCidades(util.getPagePadrao());
@@ -80,6 +79,7 @@ class CidadeServiceTest {
   }
 
     @Test
+    @DisplayName("trazer pagincao vazia")
     void paginacaoCidadesVazia() {
         Page<Cidade> cidadePage = new PageImpl<>(new ArrayList<>(), util.getPagePadrao(), 0);
         when(cidadeRepository.findAll(any(Pageable.class))).thenReturn(cidadePage);
@@ -93,8 +93,9 @@ class CidadeServiceTest {
     }
 
     @Test
+    @DisplayName("Consultar Cidade por id")
     void consultarCidadePorId() {
-        Optional<Cidade> cidade = Optional.ofNullable(modelMapper.map(utilCidade.criarCidade(), Cidade.class));
+        Optional<Cidade> cidade = Optional.ofNullable(modelMapper.map(utilCidadeTest.criarCidade(), Cidade.class));
         when(cidadeRepository.findById(util.getUiidPadrao())).thenReturn(cidade);
 
         CidadeDto resultado = cidadeService.consultarCidadePorId(util.getUiidPadrao());
@@ -105,7 +106,7 @@ class CidadeServiceTest {
     }
 
     @Test
-
+    @DisplayName("Consultar Cidade não cadastrada")
     void consultarCidadeInexistente() {
         when(cidadeRepository.findById(util.getUiidPadrao())).thenReturn(null);
 
@@ -121,6 +122,7 @@ class CidadeServiceTest {
     }
 
     @Test
+    @DisplayName("Remover Cidade não cadastrada")
     void removerCidadeInexistente() {
         when(cidadeRepository.findById(util.getUiidPadrao())).thenReturn(null);
 
@@ -133,12 +135,13 @@ class CidadeServiceTest {
     }
 
     @Test
+    @DisplayName("Remover Cidade com sucesso")
     void removerCidade() {
         when(cidadeRepository.save(any(Cidade.class)))
-                .thenReturn(new Cidade(util.getUiidPadrao(), "Cidade Teste", "Brasil", "PR", "123456789"));
-        CidadeDto cidadeCadastrada = cidadeService.cadastrarCidade(utilCidade.criarCidade());
+                .thenReturn(new Cidade(util.getUiidPadrao(), "Cidade Teste", "Brasil", "PR"));
+        CidadeDto cidadeCadastrada = cidadeService.cadastrarCidade(utilCidadeTest.criarCidade());
 
-        Optional<Cidade> cidade = Optional.ofNullable(modelMapper.map(utilCidade.criarCidade(), Cidade.class));
+        Optional<Cidade> cidade = Optional.ofNullable(modelMapper.map(utilCidadeTest.criarCidade(), Cidade.class));
         when(cidadeRepository.findById(util.getUiidPadrao())).thenReturn(cidade);
 
         cidadeService.removerCidade(util.getUiidPadrao());

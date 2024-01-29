@@ -1,9 +1,8 @@
 -- Criação da tabela "cidade"
 CREATE TABLE public.cidade (
-    codigo_ibge VARCHAR(255),
     nome VARCHAR(255),
     pais VARCHAR(255),
-    string VARCHAR(255) NOT NULL,
+    id VARCHAR(255) NOT NULL,
     uf VARCHAR(255)
 );
 
@@ -120,7 +119,7 @@ CREATE TABLE public.mensalidade (
 );
 
 -- Adicionando chaves primárias
-ALTER TABLE public.cidade ADD CONSTRAINT cidade_pkey PRIMARY KEY (string);
+ALTER TABLE public.cidade ADD CONSTRAINT cidade_pkey PRIMARY KEY (id);
 ALTER TABLE public.cliente_contato ADD CONSTRAINT cliente_contato_pkey PRIMARY KEY (id);
 ALTER TABLE public.cliente_endereco ADD CONSTRAINT cliente_endereco_pkey PRIMARY KEY (id);
 ALTER TABLE public.cliente ADD CONSTRAINT cliente_pkey PRIMARY KEY (id);
@@ -141,5 +140,5 @@ ALTER TABLE public.cliente ADD CONSTRAINT cliente_cliente_contato_fk FOREIGN KEY
 ALTER TABLE public.empresa ADD CONSTRAINT empresa_empresa_endereco_fk FOREIGN KEY (idempresa_endereco) REFERENCES public.empresa_endereco(id);
 ALTER TABLE public.fatura ADD CONSTRAINT fatura_cliente_fk FOREIGN KEY (idcliente) REFERENCES public.cliente(id);
 ALTER TABLE public.mensalidade ADD CONSTRAINT mensalidade_empresa_fk FOREIGN KEY (idempresa) REFERENCES public.empresa(id);
-ALTER TABLE public.empresa_endereco ADD CONSTRAINT empresa_endereco_cidade_fk FOREIGN KEY (idcidade) REFERENCES public.cidade(string);
-ALTER TABLE public.cliente_endereco ADD CONSTRAINT cliente_endereco_cidade_fk FOREIGN KEY (idcidade) REFERENCES public.cidade(string);
+ALTER TABLE public.empresa_endereco ADD CONSTRAINT empresa_endereco_cidade_fk FOREIGN KEY (idcidade) REFERENCES public.cidade(id);
+ALTER TABLE public.cliente_endereco ADD CONSTRAINT cliente_endereco_cidade_fk FOREIGN KEY (idcidade) REFERENCES public.cidade(id);

@@ -7,6 +7,14 @@ public class CidadeIbgeRequest {
     private String nome;
     private Microrregiao microrregiao;
 
+    public CidadeIbgeRequest(String id, String nome, Microrregiao microrregiao) {
+        this.id = id;
+        this.nome = nome;
+        this.microrregiao = microrregiao;
+    }
+
+    public CidadeIbgeRequest() {
+    }
 
     public String getId() {
         return id;

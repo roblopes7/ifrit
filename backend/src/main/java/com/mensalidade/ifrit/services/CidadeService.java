@@ -34,29 +34,23 @@ public class CidadeService {
     }
 
 
-    public CidadeDto cadastrarCidade(CidadeDto cidadeDto){
-        Cidade cidade = modelMapper.map(cidadeDto , Cidade.class);
+    public CidadeDto cadastrarCidade(CidadeDto cidadeDto) {
+        Cidade cidade = modelMapper.map(cidadeDto, Cidade.class);
         cidade = cidadeRepository.save(cidade);
         return modelMapper.map(cidade, CidadeDto.class);
     }
 
     public void consultarCidadesPeloIbge() {
-
-        //limpar tabela cidades antes de consultar ibge
-        cidadeRepository.deleteAll();
-
-        RestTemplate restTemplate = new RestTemplate();
-        CidadeIbgeRequest[] cidadesIbge = restTemplate.getForObject(URI_IBGE, CidadeIbgeRequest[].class);
+        CidadeIbgeRequest[] cidadesIbge = consultarIBGE();
         List<Cidade> cidades = new ArrayList<>();
         if (cidadesIbge != null) {
             for (CidadeIbgeRequest cidadeIbge : cidadesIbge) {
                 Cidade cidade = new Cidade();
-                cidade.setCodigoIbge(cidadeIbge.getId());
+                cidade.setId(cidadeIbge.getId());
                 cidade.setNome(cidadeIbge.getNome());
                 cidade.setPais("Brasil");
                 cidade.setUf(cidadeIbge.getUf());
                 cidades.add(cidade);
-
             }
             cidadeRepository.saveAll(cidades);
         }
@@ -67,7 +61,7 @@ public class CidadeService {
     }
 
     public CidadeDto consultarCidadePorId(String id) {
-       return cidadeRepository
+        return cidadeRepository
                 .findById(id)
                 .map(cidade -> modelMapper.map(cidade, CidadeDto.class))
                 .orElseThrow(() -> new ObjetoNaoEncontrado(CIDADE_NAO_ENCONTRADA));
@@ -79,5 +73,10 @@ public class CidadeService {
                 .orElseThrow(() -> new ObjetoNaoEncontrado(CIDADE_NAO_ENCONTRADA));
 
         cidadeRepository.delete(cidade);
+    }
+
+    public CidadeIbgeRequest[] consultarIBGE() {
+        RestTemplate restTemplate = new RestTemplate();
+        return restTemplate.getForObject(URI_IBGE, CidadeIbgeRequest[].class);
     }
 }
