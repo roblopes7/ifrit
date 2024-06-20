@@ -22,7 +22,9 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 public class SecurityConfig {
 
-    private static final String[] PUBLIC_MATCHERS = {"/swagger-ui/**", "/v2/api-docs", "/swagger-resources/**", "/webjars/**","/v3/api-docs/**"};
+    private static final String[] PUBLIC_MATCHERS = {
+            "/swagger-ui/**", "/v2/api-docs", "/swagger-resources/**", "/webjars/**","/v3/api-docs/**"
+    };
 
     private final AuthService authService;
     private final SecurityFilter securityFilter;

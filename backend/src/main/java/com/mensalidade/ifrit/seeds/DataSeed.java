@@ -2,7 +2,6 @@ package com.mensalidade.ifrit.seeds;
 
 import com.mensalidade.ifrit.dto.request.UsuarioRequest;
 import com.mensalidade.ifrit.dto.response.UsuarioCompletoResponse;
-import com.mensalidade.ifrit.models.Usuario;
 import com.mensalidade.ifrit.models.enums.Perfil;
 import com.mensalidade.ifrit.services.UsuarioService;
 import org.springframework.boot.CommandLineRunner;
