@@ -3,6 +3,9 @@ package com.mensalidade.ifrit.utils;
 import com.mensalidade.ifrit.dto.CidadeDto;
 import com.mensalidade.ifrit.models.Cidade;
 import com.mensalidade.ifrit.requests.CidadeIbgeRequest;
+import com.mensalidade.ifrit.requests.CidadeIbgeUtil.Mesorregiao;
+import com.mensalidade.ifrit.requests.CidadeIbgeUtil.Microrregiao;
+import com.mensalidade.ifrit.requests.CidadeIbgeUtil.UF;
 
 import java.util.Arrays;
 import java.util.List;
@@ -28,8 +31,26 @@ public class CidadeTest {
 
     public CidadeIbgeRequest[] cidadesIbge(){
         return new CidadeIbgeRequest[]{
-                new CidadeIbgeRequest(util.getUiidPadrao(), "Cidade1", null),
-                new CidadeIbgeRequest(util.getUiidDiferente(), "Cidade2", null)
+                new CidadeIbgeRequest(util.getUiidPadrao(), "Cidade1", getMicroRegiaoMock()),
+                new CidadeIbgeRequest(util.getUiidDiferente(), "Cidade2", getMicroRegiaoMock())
         };
     }
+
+    public Microrregiao getMicroRegiaoMock() {
+        UF uf = new UF();
+        uf.setId(1);
+        uf.setNome("Parana");
+        uf.setSigla("PR");
+
+        Mesorregiao mesorregiao = new Mesorregiao();
+        mesorregiao.setUF(uf);
+        mesorregiao.setId(1);
+
+        Microrregiao microrregiao = new Microrregiao();
+        microrregiao.setId(1);
+        microrregiao.setMesorregiao(mesorregiao);
+        return microrregiao;
+    }
+
+
 }

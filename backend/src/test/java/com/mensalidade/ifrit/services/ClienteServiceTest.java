@@ -1,9 +1,11 @@
 package com.mensalidade.ifrit.services;
 
 import com.mensalidade.ifrit.dto.ClienteDto;
+import com.mensalidade.ifrit.dto.EnderecoDto;
 import com.mensalidade.ifrit.models.Cliente;
 import com.mensalidade.ifrit.repositories.ClienteRepository;
 import com.mensalidade.ifrit.services.exceptions.ObjetoNaoEncontrado;
+import com.mensalidade.ifrit.utils.CidadeTest;
 import com.mensalidade.ifrit.utils.ClienteTest;
 import com.mensalidade.ifrit.utils.Util;
 import org.assertj.core.api.Assertions;
@@ -32,6 +34,8 @@ class ClienteServiceTest {
     private final String CLIENTE_NAO_ENCONTRADA = "Cliente não encontrado.";
     private final Util util = new Util();
     private final ClienteTest utilClienteTest = new ClienteTest();
+    private final CidadeTest utilCidadeTest = new CidadeTest();
+
 
     @Mock
     private ClienteRepository clienteRepository;
@@ -146,5 +150,22 @@ class ClienteServiceTest {
         clienteService.removerCliente(util.getUiidPadrao());
 
         verify(clienteRepository, Mockito.times(1)).delete(any());
+    }
+
+    @Test
+    @DisplayName("Cadastro Cliente com cidade")
+    void cadastrarClienteComCidade() {
+        ClienteDto cliente = utilClienteTest.criarCliente();
+        EnderecoDto enderecoDto = new EnderecoDto();
+        enderecoDto.setCidade(utilCidadeTest.criarCidade());
+        cliente.setEndereco(enderecoDto);
+
+        when(clienteRepository.save(any(Cliente.class)))
+                .thenReturn(modelMapper.map(cliente, Cliente.class));
+
+        ClienteDto clienteCadastrado = clienteService.cadastrarCliente(cliente);
+
+        verify(clienteRepository, Mockito.times(1)).save(any());
+        Assertions.assertThat(clienteCadastrado.getId()).isEqualTo(util.getUiidPadrao());
     }
 }

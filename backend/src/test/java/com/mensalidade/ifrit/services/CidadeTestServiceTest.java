@@ -1,8 +1,10 @@
 package com.mensalidade.ifrit.services;
 
+import com.mensalidade.ifrit.config.IBGEConfig;
 import com.mensalidade.ifrit.dto.CidadeDto;
 import com.mensalidade.ifrit.models.Cidade;
 import com.mensalidade.ifrit.repositories.CidadeRepository;
+import com.mensalidade.ifrit.requests.CidadeIbgeRequest;
 import com.mensalidade.ifrit.services.exceptions.ObjetoNaoEncontrado;
 import com.mensalidade.ifrit.utils.CidadeTest;
 import com.mensalidade.ifrit.utils.Util;
@@ -10,15 +12,17 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
@@ -27,12 +31,14 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 
+@ExtendWith(SpringExtension.class)
+@SpringBootTest
 class CidadeTestServiceTest {
 
     private final String CIDADE_NAO_ENCONTRADA = "Cidade não encontrada.";
+    private final String IBGE_URI = "https://servicodados.ibge.gov.br/api/v1/localidades/municipios";
     CidadeTest utilCidadeTest = new CidadeTest();
     Util util = new Util();
 
@@ -42,15 +48,20 @@ class CidadeTestServiceTest {
     @Mock
     private ModelMapper modelMapper;
 
+    @Mock
+    private RestTemplate restTemplate;
+
+    @Mock
+    private IBGEConfig ibgeConfig;
+
     @InjectMocks
-    @Autowired
     private CidadeService cidadeService;
 
     @BeforeEach
     void setup(){
         MockitoAnnotations.openMocks(this);
         modelMapper = new ModelMapper();
-        cidadeService = new CidadeService(cidadeRepository, modelMapper);
+        cidadeService = new CidadeService(cidadeRepository, modelMapper, ibgeConfig);
     }
 
     @Test
@@ -148,4 +159,20 @@ class CidadeTestServiceTest {
 
         verify(cidadeRepository, Mockito.times(1)).delete(any());
     }
+
+    @Test
+    @DisplayName("Consultar IBGE")
+    public void consultarCidadesPeloIbge() {
+        CidadeIbgeRequest[] cidadesIbge = utilCidadeTest.cidadesIbge();
+
+        when(ibgeConfig.getUriIBGE())
+                .thenReturn(IBGE_URI);
+
+        when(restTemplate.getForObject(eq(IBGE_URI), eq(CidadeIbgeRequest[].class)))
+                .thenReturn(cidadesIbge);
+
+        cidadeService.consultarCidadesPeloIbge();
+        verify(cidadeRepository).saveAll(anyList());
+    }
+
 }

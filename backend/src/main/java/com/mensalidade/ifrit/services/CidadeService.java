@@ -1,5 +1,6 @@
 package com.mensalidade.ifrit.services;
 
+import com.mensalidade.ifrit.config.IBGEConfig;
 import com.mensalidade.ifrit.dto.CidadeDto;
 import com.mensalidade.ifrit.models.Cidade;
 import com.mensalidade.ifrit.repositories.CidadeRepository;
@@ -19,18 +20,17 @@ import java.util.List;
 @Service
 public class CidadeService {
 
-    @Value("${api.ibge}")
-    private String URI_IBGE;
-
     private final String CIDADE_NAO_ENCONTRADA = "Cidade não encontrada.";
 
     private final CidadeRepository cidadeRepository;
     private final ModelMapper modelMapper;
+    private final IBGEConfig ibgeConfig;
 
     @Autowired
-    public CidadeService(CidadeRepository cidadeRepository, ModelMapper modelMapper) {
+    public CidadeService(CidadeRepository cidadeRepository, ModelMapper modelMapper, IBGEConfig ibgeConfig) {
         this.cidadeRepository = cidadeRepository;
         this.modelMapper = modelMapper;
+        this.ibgeConfig = ibgeConfig;
     }
 
 
@@ -77,6 +77,6 @@ public class CidadeService {
 
     public CidadeIbgeRequest[] consultarIBGE() {
         RestTemplate restTemplate = new RestTemplate();
-        return restTemplate.getForObject(URI_IBGE, CidadeIbgeRequest[].class);
+        return restTemplate.getForObject(ibgeConfig.getUriIBGE(), CidadeIbgeRequest[].class);
     }
 }
