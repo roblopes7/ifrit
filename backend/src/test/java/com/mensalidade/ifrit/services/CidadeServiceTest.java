@@ -35,7 +35,7 @@ import static org.mockito.Mockito.*;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
-class CidadeTestServiceTest {
+class CidadeServiceTest {
 
     private final String CIDADE_NAO_ENCONTRADA = "Cidade não encontrada.";
     private final String IBGE_URI = "https://servicodados.ibge.gov.br/api/v1/localidades/municipios";
