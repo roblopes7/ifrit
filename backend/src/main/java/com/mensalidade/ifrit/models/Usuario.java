@@ -57,6 +57,10 @@ public class Usuario implements UserDetails {
         this.ativo = ativo;
     }
 
+    public Usuario(String login) {
+        this.login = login;
+    }
+
     public String getId() {
         return id;
     }

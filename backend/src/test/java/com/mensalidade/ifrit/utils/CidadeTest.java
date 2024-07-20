@@ -11,11 +11,11 @@ import java.util.Arrays;
 import java.util.List;
 
 public class CidadeTest {
-    Util util = new Util();
+    TestsUtil testsUtil = new TestsUtil();
 
     public CidadeDto criarCidade(){
         CidadeDto dto = new CidadeDto();
-        dto.setId(util.getUiidPadrao());
+        dto.setId(testsUtil.getUiidPadrao());
         dto.setNome("Cidade Teste");
         dto.setPais("Brasil");
         dto.setUf("PR");
@@ -24,15 +24,15 @@ public class CidadeTest {
 
     public List<Cidade> cidades(){
         return  Arrays.asList(
-                new com.mensalidade.ifrit.models.Cidade(util.getUiidPadrao(), "Cidade1", "Brasil", "PR"),
-                new com.mensalidade.ifrit.models.Cidade(util.getUiidDiferente(), "Cidade2", "Brasil", "SP")
+                new com.mensalidade.ifrit.models.Cidade(testsUtil.getUiidPadrao(), "Cidade1", "Brasil", "PR"),
+                new com.mensalidade.ifrit.models.Cidade(testsUtil.getUiidDiferente(), "Cidade2", "Brasil", "SP")
         );
     }
 
     public CidadeIbgeRequest[] cidadesIbge(){
         return new CidadeIbgeRequest[]{
-                new CidadeIbgeRequest(util.getUiidPadrao(), "Cidade1", getMicroRegiaoMock()),
-                new CidadeIbgeRequest(util.getUiidDiferente(), "Cidade2", getMicroRegiaoMock())
+                new CidadeIbgeRequest(testsUtil.getUiidPadrao(), "Cidade1", getMicroRegiaoMock()),
+                new CidadeIbgeRequest(testsUtil.getUiidDiferente(), "Cidade2", getMicroRegiaoMock())
         };
     }
 

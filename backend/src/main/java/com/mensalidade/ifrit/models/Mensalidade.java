@@ -37,6 +37,20 @@ public class Mensalidade {
     @Column(name = "observacao")
     private String observacao;
 
+    public Mensalidade() {
+    }
+
+    public Mensalidade(String id, BigDecimal valor, String descricao, Date emissao, Date vencimento, Empresa empresa, Cliente cliente, String observacao) {
+        this.id = id;
+        this.valor = valor;
+        this.descricao = descricao;
+        this.emissao = emissao;
+        this.vencimento = vencimento;
+        this.empresa = empresa;
+        this.cliente = cliente;
+        this.observacao = observacao;
+    }
+
     public String getId() {
         return id;
     }

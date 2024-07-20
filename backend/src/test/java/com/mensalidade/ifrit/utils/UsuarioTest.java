@@ -9,11 +9,11 @@ import java.util.List;
 
 public class UsuarioTest {
 
-    Util util = new Util();
+    TestsUtil testsUtil = new TestsUtil();
 
     public UsuarioRequest criarUsuario(){
         UsuarioRequest u = new UsuarioRequest();
-        u.setId(util.getUiidPadrao());
+        u.setId(testsUtil.getUiidPadrao());
         u.setAtivo(true);
         u.setLogin("TESTE");
         u.setNome("Usuario Teste");
@@ -24,8 +24,8 @@ public class UsuarioTest {
 
     public List<Usuario> usuarios(){
         return  Arrays.asList(
-                new Usuario(util.getUiidPadrao(), "TESTE", "Usuario Teste", "123456", "User@mail.com", "", "", Perfil.ADMIN, true),
-                new Usuario(util.getUiidDiferente(), "TESTE 2", "Usuario Teste 2", "123456", "User2@mail.com", "", "", Perfil.ADMIN, true)
+                new Usuario(testsUtil.getUiidPadrao(), "TESTE", "Usuario Teste", "123456", "User@mail.com", "", "", Perfil.ADMIN, true),
+                new Usuario(testsUtil.getUiidDiferente(), "TESTE 2", "Usuario Teste 2", "123456", "User2@mail.com", "", "", Perfil.ADMIN, true)
         );
     }
 }

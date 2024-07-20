@@ -7,7 +7,7 @@ import com.mensalidade.ifrit.repositories.UsuarioRepository;
 import com.mensalidade.ifrit.services.exceptions.ObjetoCadastradoException;
 import com.mensalidade.ifrit.services.exceptions.ObjetoNaoEncontrado;
 import com.mensalidade.ifrit.utils.UsuarioTest;
-import com.mensalidade.ifrit.utils.Util;
+import com.mensalidade.ifrit.utils.TestsUtil;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -36,7 +36,7 @@ class UsuarioServiceTest {
 
     private final String USUARIO_NAO_ENCONTRADO = "Usuário não encontrado";
     UsuarioTest utilUsuarioTest = new UsuarioTest();
-    Util util = new Util();
+    TestsUtil testsUtil = new TestsUtil();
 
     @Mock
     private UsuarioRepository usuarioRepository;
@@ -67,26 +67,26 @@ class UsuarioServiceTest {
         UsuarioResponse usuarioCadastrado = usuarioService.cadastrarUsuario(utilUsuarioTest.criarUsuario());
 
         verify(usuarioRepository, Mockito.times(1)).save(any());
-        Assertions.assertThat(usuarioCadastrado.getId()).isEqualTo(util.getUiidPadrao());
+        Assertions.assertThat(usuarioCadastrado.getId()).isEqualTo(testsUtil.getUiidPadrao());
     }
 
     @Test
     @DisplayName("Consultar Usuario por ID com sucesso")
     void consultarUsuarioCompletoPorID() {
         Optional<Usuario> usuario = Optional.ofNullable(modelMapper.map(utilUsuarioTest.criarUsuario(), Usuario.class));
-        when(usuarioRepository.findById(util.getUiidPadrao())).thenReturn(usuario);
+        when(usuarioRepository.findById(testsUtil.getUiidPadrao())).thenReturn(usuario);
 
-        UsuarioCompletoResponse resultado = usuarioService.consultarUsuarioCompletoPorID(util.getUiidPadrao());
+        UsuarioCompletoResponse resultado = usuarioService.consultarUsuarioCompletoPorID(testsUtil.getUiidPadrao());
 
         assertNotNull(resultado);
         verify(usuarioRepository, Mockito.times(1)).findById(any());
-        Assertions.assertThat(resultado.getId()).isEqualTo(util.getUiidPadrao());
+        Assertions.assertThat(resultado.getId()).isEqualTo(testsUtil.getUiidPadrao());
     }
 
     @Test
     @DisplayName("Consultar Usuario por ID inexistente")
     void consultarUsuarioCompletoPorIDComErro() {
-        when(usuarioRepository.findById(util.getUiidPadrao())).thenReturn(null);
+        when(usuarioRepository.findById(testsUtil.getUiidPadrao())).thenReturn(null);
 
         ObjetoNaoEncontrado exception = assertThrows(ObjetoNaoEncontrado.class, this::consultaVazia);
 
@@ -128,28 +128,28 @@ class UsuarioServiceTest {
     @Test
     @DisplayName("Trazer usuarios paginados")
     void carregarTodosUsuarios() {
-        Page<Usuario> usuarioPage = new PageImpl<>(utilUsuarioTest.usuarios(), util.getPagePadrao(), utilUsuarioTest.usuarios().size());
+        Page<Usuario> usuarioPage = new PageImpl<>(utilUsuarioTest.usuarios(), testsUtil.getPagePadrao(), utilUsuarioTest.usuarios().size());
         when(usuarioRepository.findAll(any(Pageable.class))).thenReturn(usuarioPage);
 
-        Page<UsuarioResponse> result = usuarioService.listarTodosUsuarios(util.getPagePadrao());
+        Page<UsuarioResponse> result = usuarioService.listarTodosUsuarios(testsUtil.getPagePadrao());
 
 
         assertNotNull(result);
-        verify(usuarioRepository, times(1)).findAll(util.getPagePadrao());
+        verify(usuarioRepository, times(1)).findAll(testsUtil.getPagePadrao());
         Assertions.assertThat(result.getTotalElements()).isEqualTo(usuarioPage.getTotalElements());
     }
 
     @Test
     @DisplayName("trazer pagincao vazia")
     void paginacaoUsuarioVazia() {
-        Page<Usuario> usuarioPage = new PageImpl<>(new ArrayList<>(), util.getPagePadrao(), 0);
+        Page<Usuario> usuarioPage = new PageImpl<>(new ArrayList<>(), testsUtil.getPagePadrao(), 0);
         when(usuarioRepository.findAll(any(Pageable.class))).thenReturn(usuarioPage);
 
-        Page<UsuarioResponse> resultado = usuarioService.listarTodosUsuarios(util.getPagePadrao());
+        Page<UsuarioResponse> resultado = usuarioService.listarTodosUsuarios(testsUtil.getPagePadrao());
 
 
         assertNotNull(resultado);
-        verify(usuarioRepository, times(1)).findAll(util.getPagePadrao());
+        verify(usuarioRepository, times(1)).findAll(testsUtil.getPagePadrao());
         Assertions.assertThat(resultado.getTotalElements()).isZero();
     }
 
@@ -194,7 +194,7 @@ class UsuarioServiceTest {
         UsuarioCompletoResponse usuarioAtualizado = usuarioService.atualizarUsuario(utilUsuarioTest.criarUsuario());
 
         verify(usuarioRepository, Mockito.times(1)).save(any());
-        Assertions.assertThat(usuarioAtualizado.getId()).isEqualTo(util.getUiidPadrao());
+        Assertions.assertThat(usuarioAtualizado.getId()).isEqualTo(testsUtil.getUiidPadrao());
         Assertions.assertThat(usuarioAtualizado.getLogin()).isEqualTo("LOGIN ATUALIZADO"); //Login sempre Upper
         Assertions.assertThat(usuarioAtualizado.getNome()).isEqualTo("Usuario atualizado");
         Assertions.assertThat(usuarioAtualizado.getEmail()).isEqualTo("Email@atualizado.com");
