@@ -1,8 +1,9 @@
 <mat-card class="conteudo">
     <mat-toolbar color="primary">Cidades</mat-toolbar>
   <table mat-table [dataSource]="cidades" class="mat-elevation-z8">
+
     <ng-container matColumnDef="id">
-      <th mat-header-cell *matHeaderCellDef fxFlex="10%">ID</th>
+      <th mat-header-cell *matHeaderCellDef fxFlex="10%">Código IBGE</th>
       <td mat-cell *matCellDef="let cidade" fxFlex="10%">{{ cidade.id }}</td>
     </ng-container>
 

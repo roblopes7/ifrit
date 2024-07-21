@@ -1,15 +1,16 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
-import { QueryParamRequest } from '../../utils/request/QueryParamRequest';
-import { Cidade } from '../cidade';
+import { API_CONFIG } from '../../config/api.config';
+import { DataTableResponseData } from '../../models/DataTableResponse';
 
 @Injectable({
   providedIn: 'root',
 })
 export class CidadeService {
 
-  private readonly API = "cidades"
+  private readonly API: string =  "/cidades"
+  private readonly TOKEN: string = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJpZnJpdCIsInN1YiI6IkFETUlOIiwiZXhwIjoxNzIxNjQ3NzQwfQ.aj8GpapcB4BFmBmXX8927yfzQi1CC3fXoq9BEsP4VuU"
 
   constructor(private http: HttpClient) { }
 
@@ -21,10 +22,10 @@ export class CidadeService {
     .set('page', 0);
 
     let headers = new HttpHeaders();
-    headers = headers.append('Authorization', "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJpZnJpdCIsInN1YiI6IkFETUlOIiwiZXhwIjoxNzEwOTI4MTYyfQ.9Qmbs-ng674dDhKgO9KvFT9mmSaNvv12eaqWS0u5s4U");
+    headers = headers.append('Authorization', this.TOKEN);
     headers = headers.append('x-Flatten', 'true');
     headers = headers.append('Content-Type', 'application/json');
 
-    return this.http.get<Cidade[]>(`${this.API}/lista`, {headers, params})
+    return this.http.get<DataTableResponseData>(`${API_CONFIG.baseUrl}${this.API}/lista`, { headers, params });
   }
 }

@@ -1,6 +1,6 @@
 export interface Cidade {
-  id: String,
-  nome: String,
-  pais: String,
-  uf: String,
+  id: string,
+  nome: string,
+  pais: string,
+  uf: string,
 }
