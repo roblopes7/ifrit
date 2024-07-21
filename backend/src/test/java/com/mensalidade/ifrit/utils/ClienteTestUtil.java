@@ -8,7 +8,7 @@ import com.mensalidade.ifrit.models.*;
 import java.util.Arrays;
 import java.util.List;
 
-public class ClienteTest {
+public class ClienteTestUtil {
     TestsUtil testsUtil = new TestsUtil();
 
     public ClienteDto criarCliente() {

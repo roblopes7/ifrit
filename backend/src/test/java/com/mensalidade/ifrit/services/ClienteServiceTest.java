@@ -5,22 +5,25 @@ import com.mensalidade.ifrit.dto.EnderecoDto;
 import com.mensalidade.ifrit.models.Cliente;
 import com.mensalidade.ifrit.repositories.ClienteRepository;
 import com.mensalidade.ifrit.services.exceptions.ObjetoNaoEncontrado;
-import com.mensalidade.ifrit.utils.CidadeTest;
-import com.mensalidade.ifrit.utils.ClienteTest;
+import com.mensalidade.ifrit.utils.CidadeTestUtil;
+import com.mensalidade.ifrit.utils.ClienteTestUtil;
 import com.mensalidade.ifrit.utils.TestsUtil;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.ArrayList;
 import java.util.Optional;
@@ -29,12 +32,14 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
+@ExtendWith(SpringExtension.class)
+@SpringBootTest
 class ClienteServiceTest {
 
     private final String CLIENTE_NAO_ENCONTRADA = "Cliente não encontrado.";
     private final TestsUtil testsUtil = new TestsUtil();
-    private final ClienteTest utilClienteTest = new ClienteTest();
-    private final CidadeTest utilCidadeTest = new CidadeTest();
+    private final ClienteTestUtil utilClienteTestUtil = new ClienteTestUtil();
+    private final CidadeTestUtil utilCidadeTestUtil = new CidadeTestUtil();
 
 
     @Mock
@@ -59,8 +64,8 @@ class ClienteServiceTest {
     @DisplayName("Cadastro Cliente com sucesso")
     void cadastrarCliente() {
         when(clienteRepository.save(any(Cliente.class)))
-                .thenReturn(modelMapper.map(utilClienteTest.criarCliente(), Cliente.class));
-        ClienteDto clienteCadastrado = clienteService.cadastrarCliente(utilClienteTest.criarCliente());
+                .thenReturn(modelMapper.map(utilClienteTestUtil.criarCliente(), Cliente.class));
+        ClienteDto clienteCadastrado = clienteService.cadastrarCliente(utilClienteTestUtil.criarCliente());
 
         verify(clienteRepository, Mockito.times(1)).save(any());
         Assertions.assertThat(clienteCadastrado.getId()).isEqualTo(testsUtil.getUiidPadrao());
@@ -69,7 +74,7 @@ class ClienteServiceTest {
     @Test
     @DisplayName("Consultar Cliente com sucesso")
     void consultarClientePorId() {
-        Optional<Cliente> cliente = Optional.ofNullable(modelMapper.map(utilClienteTest.criarCliente(), Cliente.class));
+        Optional<Cliente> cliente = Optional.ofNullable(modelMapper.map(utilClienteTestUtil.criarCliente(), Cliente.class));
         when(clienteRepository.findById(testsUtil.getUiidPadrao())).thenReturn(cliente);
 
         ClienteDto resultado = clienteService.consultarClientePorId(testsUtil.getUiidPadrao());
@@ -99,7 +104,7 @@ class ClienteServiceTest {
     @Test
     @DisplayName("Trazer clientes paginados")
     void carregarTodosClientes() {
-        Page<Cliente> clientePage = new PageImpl<>(utilClienteTest.clientes(), testsUtil.getPagePadrao(), utilClienteTest.clientes().size());
+        Page<Cliente> clientePage = new PageImpl<>(utilClienteTestUtil.clientes(), testsUtil.getPagePadrao(), utilClienteTestUtil.clientes().size());
         when(clienteRepository.findAll(any(Pageable.class))).thenReturn(clientePage);
 
         Page<ClienteDto> result = clienteService.carregarTodosClientes(testsUtil.getPagePadrao());
@@ -141,10 +146,10 @@ class ClienteServiceTest {
     @DisplayName("Remover Cliente com sucesso")
     void removerCliente() {
         when(clienteRepository.save(any(Cliente.class)))
-                .thenReturn(utilClienteTest.clientes().get(0));
-        ClienteDto clienteCadastrada = clienteService.cadastrarCliente(utilClienteTest.criarCliente());
+                .thenReturn(utilClienteTestUtil.clientes().get(0));
+        ClienteDto clienteCadastrada = clienteService.cadastrarCliente(utilClienteTestUtil.criarCliente());
 
-        Optional<Cliente> cliente = Optional.ofNullable(modelMapper.map(utilClienteTest.criarCliente(), Cliente.class));
+        Optional<Cliente> cliente = Optional.ofNullable(modelMapper.map(utilClienteTestUtil.criarCliente(), Cliente.class));
         when(clienteRepository.findById(testsUtil.getUiidPadrao())).thenReturn(cliente);
 
         clienteService.removerCliente(testsUtil.getUiidPadrao());
@@ -155,9 +160,9 @@ class ClienteServiceTest {
     @Test
     @DisplayName("Cadastro Cliente com cidade")
     void cadastrarClienteComCidade() {
-        ClienteDto cliente = utilClienteTest.criarCliente();
+        ClienteDto cliente = utilClienteTestUtil.criarCliente();
         EnderecoDto enderecoDto = new EnderecoDto();
-        enderecoDto.setCidade(utilCidadeTest.criarCidade());
+        enderecoDto.setCidade(utilCidadeTestUtil.criarCidade());
         cliente.setEndereco(enderecoDto);
 
         when(clienteRepository.save(any(Cliente.class)))

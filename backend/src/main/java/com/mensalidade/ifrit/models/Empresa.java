@@ -25,6 +25,19 @@ public class Empresa {
     @JoinColumn(name = "idempresa_endereco")
     private EmpresaEndereco endereco;
 
+    public Empresa() {
+    }
+
+    public Empresa(String id, String razaoSocial, String nomeFantasia, String cnpjCpf, String responsavel, EmpresaContato contato, EmpresaEndereco endereco) {
+        this.id = id;
+        this.razaoSocial = razaoSocial;
+        this.nomeFantasia = nomeFantasia;
+        this.cnpjCpf = cnpjCpf;
+        this.responsavel = responsavel;
+        this.contato = contato;
+        this.endereco = endereco;
+    }
+
     public String getId() {
         return id;
     }

@@ -7,7 +7,7 @@ import com.mensalidade.ifrit.models.enums.Perfil;
 import java.util.Arrays;
 import java.util.List;
 
-public class UsuarioTest {
+public class UsuarioTestUtil {
 
     TestsUtil testsUtil = new TestsUtil();
 

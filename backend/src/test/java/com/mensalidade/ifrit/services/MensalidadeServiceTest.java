@@ -4,7 +4,7 @@ import com.mensalidade.ifrit.dto.MensalidadeDto;
 import com.mensalidade.ifrit.models.Mensalidade;
 import com.mensalidade.ifrit.repositories.MensalidadeRepository;
 import com.mensalidade.ifrit.services.exceptions.ObjetoNaoEncontrado;
-import com.mensalidade.ifrit.utils.MensalidadeTest;
+import com.mensalidade.ifrit.utils.MensalidadeTestUtil;
 import com.mensalidade.ifrit.utils.TestsUtil;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -35,7 +35,7 @@ public class MensalidadeServiceTest {
 
     private final String MENSALIDADE_NAO_ENCONTRADA = "Mensalidade não encontrada.";
     private final TestsUtil testsUtil = new TestsUtil();
-    private final MensalidadeTest utilMensalidadeTest = new MensalidadeTest();
+    private final MensalidadeTestUtil utilMensalidadeTestUtil = new MensalidadeTestUtil();
 
     @Mock
     private MensalidadeRepository mensalidadeRepository;
@@ -57,8 +57,8 @@ public class MensalidadeServiceTest {
     @DisplayName("Cadastro Mensalidade com sucesso")
     void cadastrarMensalidade() {
         when(mensalidadeRepository.save(any(Mensalidade.class)))
-                .thenReturn(modelMapper.map(utilMensalidadeTest.criarMensalidade(), Mensalidade.class));
-        MensalidadeDto mensalidadeCadastrada = mensalidadeService.cadastrarMensalidade(utilMensalidadeTest.criarMensalidade());
+                .thenReturn(modelMapper.map(utilMensalidadeTestUtil.criarMensalidade(), Mensalidade.class));
+        MensalidadeDto mensalidadeCadastrada = mensalidadeService.cadastrarMensalidade(utilMensalidadeTestUtil.criarMensalidade());
 
         verify(mensalidadeRepository, Mockito.times(1)).save(any());
         Assertions.assertThat(mensalidadeCadastrada.getId()).isEqualTo(testsUtil.getUiidPadrao());
@@ -67,7 +67,7 @@ public class MensalidadeServiceTest {
     @Test
     @DisplayName("Consultar Mensalidade com sucesso")
     void consultarMensalidadePorId() {
-        Optional<Mensalidade> mensalidade = Optional.ofNullable(modelMapper.map(utilMensalidadeTest.criarMensalidade(), Mensalidade.class));
+        Optional<Mensalidade> mensalidade = Optional.ofNullable(modelMapper.map(utilMensalidadeTestUtil.criarMensalidade(), Mensalidade.class));
         when(mensalidadeRepository.findById(testsUtil.getUiidPadrao())).thenReturn(mensalidade);
 
         MensalidadeDto resultado = mensalidadeService.consultarMensalidadePorId(testsUtil.getUiidPadrao());
@@ -96,7 +96,7 @@ public class MensalidadeServiceTest {
     @Test
     @DisplayName("Trazer Mensalidades paginados")
     void carregarTodosMensalidades() {
-        Page<Mensalidade> mensalidadePage = new PageImpl<>(utilMensalidadeTest.mensalidades(), testsUtil.getPagePadrao(), utilMensalidadeTest.mensalidades().size());
+        Page<Mensalidade> mensalidadePage = new PageImpl<>(utilMensalidadeTestUtil.mensalidades(), testsUtil.getPagePadrao(), utilMensalidadeTestUtil.mensalidades().size());
         when(mensalidadeRepository.findAll(any(Pageable.class))).thenReturn(mensalidadePage);
 
         Page<MensalidadeDto> result = mensalidadeService.carregarTodosMensalidades(testsUtil.getPagePadrao());
@@ -138,10 +138,10 @@ public class MensalidadeServiceTest {
     @DisplayName("Remover Mensalidade com sucesso")
     void removerMensalidade() {
         when(mensalidadeRepository.save(any(Mensalidade.class)))
-                .thenReturn(utilMensalidadeTest.mensalidades().get(0));
-        MensalidadeDto mensalidadeCadastrada = mensalidadeService.cadastrarMensalidade(utilMensalidadeTest.criarMensalidade());
+                .thenReturn(utilMensalidadeTestUtil.mensalidades().get(0));
+        MensalidadeDto mensalidadeCadastrada = mensalidadeService.cadastrarMensalidade(utilMensalidadeTestUtil.criarMensalidade());
 
-        Optional<Mensalidade> mensalidade = Optional.ofNullable(modelMapper.map(utilMensalidadeTest.criarMensalidade(), Mensalidade.class));
+        Optional<Mensalidade> mensalidade = Optional.ofNullable(modelMapper.map(utilMensalidadeTestUtil.criarMensalidade(), Mensalidade.class));
         when(mensalidadeRepository.findById(testsUtil.getUiidPadrao())).thenReturn(mensalidade);
 
         mensalidadeService.removerMensalidade(testsUtil.getUiidPadrao());

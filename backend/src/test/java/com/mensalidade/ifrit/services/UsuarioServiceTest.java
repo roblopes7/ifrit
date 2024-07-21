@@ -6,7 +6,7 @@ import com.mensalidade.ifrit.models.Usuario;
 import com.mensalidade.ifrit.repositories.UsuarioRepository;
 import com.mensalidade.ifrit.services.exceptions.ObjetoCadastradoException;
 import com.mensalidade.ifrit.services.exceptions.ObjetoNaoEncontrado;
-import com.mensalidade.ifrit.utils.UsuarioTest;
+import com.mensalidade.ifrit.utils.UsuarioTestUtil;
 import com.mensalidade.ifrit.utils.TestsUtil;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -35,7 +35,7 @@ import static org.mockito.Mockito.times;
 class UsuarioServiceTest {
 
     private final String USUARIO_NAO_ENCONTRADO = "Usuário não encontrado";
-    UsuarioTest utilUsuarioTest = new UsuarioTest();
+    UsuarioTestUtil utilUsuarioTestUtil = new UsuarioTestUtil();
     TestsUtil testsUtil = new TestsUtil();
 
     @Mock
@@ -63,8 +63,8 @@ class UsuarioServiceTest {
     @DisplayName("Cadastro Usuario com sucesso")
     void cadastrarUsuario() {
         when(usuarioRepository.save(any(Usuario.class)))
-                .thenReturn(utilUsuarioTest.usuarios().get(0));
-        UsuarioResponse usuarioCadastrado = usuarioService.cadastrarUsuario(utilUsuarioTest.criarUsuario());
+                .thenReturn(utilUsuarioTestUtil.usuarios().get(0));
+        UsuarioResponse usuarioCadastrado = usuarioService.cadastrarUsuario(utilUsuarioTestUtil.criarUsuario());
 
         verify(usuarioRepository, Mockito.times(1)).save(any());
         Assertions.assertThat(usuarioCadastrado.getId()).isEqualTo(testsUtil.getUiidPadrao());
@@ -73,7 +73,7 @@ class UsuarioServiceTest {
     @Test
     @DisplayName("Consultar Usuario por ID com sucesso")
     void consultarUsuarioCompletoPorID() {
-        Optional<Usuario> usuario = Optional.ofNullable(modelMapper.map(utilUsuarioTest.criarUsuario(), Usuario.class));
+        Optional<Usuario> usuario = Optional.ofNullable(modelMapper.map(utilUsuarioTestUtil.criarUsuario(), Usuario.class));
         when(usuarioRepository.findById(testsUtil.getUiidPadrao())).thenReturn(usuario);
 
         UsuarioCompletoResponse resultado = usuarioService.consultarUsuarioCompletoPorID(testsUtil.getUiidPadrao());
@@ -102,25 +102,25 @@ class UsuarioServiceTest {
     @Test
     @DisplayName("Consulta por Login com Sucesso")
     void findByLogin() {
-        Optional<Usuario> usuario = Optional.ofNullable(modelMapper.map(utilUsuarioTest.criarUsuario(), Usuario.class));
+        Optional<Usuario> usuario = Optional.ofNullable(modelMapper.map(utilUsuarioTestUtil.criarUsuario(), Usuario.class));
         if (usuario.isPresent()) {
-            Usuario u = modelMapper.map(utilUsuarioTest.criarUsuario(), Usuario.class);
+            Usuario u = modelMapper.map(utilUsuarioTestUtil.criarUsuario(), Usuario.class);
             when(usuarioRepository.findByLogin(usuario.get().getLogin())).thenReturn((UserDetails) u);
 
             UsuarioCompletoResponse resultado = usuarioService.findByLogin(usuario.get().getLogin());
 
             assertNotNull(resultado);
             verify(usuarioRepository, Mockito.times(1)).findByLogin(any());
-            Assertions.assertThat(resultado.getLogin()).isEqualTo(utilUsuarioTest.criarUsuario().getLogin());
+            Assertions.assertThat(resultado.getLogin()).isEqualTo(utilUsuarioTestUtil.criarUsuario().getLogin());
         }
     }
 
     @Test
     @DisplayName("Consulta por Login Vazio")
     void findByLoginEmpty() {
-        when(usuarioRepository.findByLogin(utilUsuarioTest.criarUsuario().getLogin())).thenReturn(null);
+        when(usuarioRepository.findByLogin(utilUsuarioTestUtil.criarUsuario().getLogin())).thenReturn(null);
 
-        UsuarioCompletoResponse resultado = usuarioService.findByLogin(utilUsuarioTest.criarUsuario().getLogin());
+        UsuarioCompletoResponse resultado = usuarioService.findByLogin(utilUsuarioTestUtil.criarUsuario().getLogin());
         assertNull(resultado);
         verify(usuarioRepository, Mockito.times(1)).findByLogin(any());
     }
@@ -128,7 +128,7 @@ class UsuarioServiceTest {
     @Test
     @DisplayName("Trazer usuarios paginados")
     void carregarTodosUsuarios() {
-        Page<Usuario> usuarioPage = new PageImpl<>(utilUsuarioTest.usuarios(), testsUtil.getPagePadrao(), utilUsuarioTest.usuarios().size());
+        Page<Usuario> usuarioPage = new PageImpl<>(utilUsuarioTestUtil.usuarios(), testsUtil.getPagePadrao(), utilUsuarioTestUtil.usuarios().size());
         when(usuarioRepository.findAll(any(Pageable.class))).thenReturn(usuarioPage);
 
         Page<UsuarioResponse> result = usuarioService.listarTodosUsuarios(testsUtil.getPagePadrao());
@@ -157,10 +157,10 @@ class UsuarioServiceTest {
     @DisplayName("Tentar cadastrar usuário com login já em uso")
     void cadastrarUsuarioLoginInvalido() {
         when(usuarioRepository.findByLogin(anyString()))
-                .thenReturn(utilUsuarioTest.usuarios().get(0));
+                .thenReturn(utilUsuarioTestUtil.usuarios().get(0));
 
         assertThrows(ObjetoCadastradoException.class, () -> {
-            usuarioService.cadastrarUsuario(utilUsuarioTest.criarUsuario());
+            usuarioService.cadastrarUsuario(utilUsuarioTestUtil.criarUsuario());
         });
     }
 
@@ -168,10 +168,10 @@ class UsuarioServiceTest {
     @DisplayName("Tentar atualizar usuário com login já em uso")
     void atualizarUsuarioLoginInvalido() {
         when(usuarioRepository.findByLogin(anyString()))
-                .thenReturn(utilUsuarioTest.usuarios().get(1));
+                .thenReturn(utilUsuarioTestUtil.usuarios().get(1));
 
         assertThrows(ObjetoCadastradoException.class, () -> {
-            usuarioService.atualizarUsuario(utilUsuarioTest.criarUsuario());
+            usuarioService.atualizarUsuario(utilUsuarioTestUtil.criarUsuario());
         });
     }
 
@@ -179,7 +179,7 @@ class UsuarioServiceTest {
     @DisplayName("Atualizar usuário com sucesso")
     void atualizarUsuario() {
 
-        Usuario usuario = utilUsuarioTest.usuarios().get(0);
+        Usuario usuario = utilUsuarioTestUtil.usuarios().get(0);
 
         when(usuarioRepository.findByLogin(anyString()))
                 .thenReturn(usuario);
@@ -191,7 +191,7 @@ class UsuarioServiceTest {
         when(usuarioRepository.save(any(Usuario.class)))
                 .thenReturn(usuario);
 
-        UsuarioCompletoResponse usuarioAtualizado = usuarioService.atualizarUsuario(utilUsuarioTest.criarUsuario());
+        UsuarioCompletoResponse usuarioAtualizado = usuarioService.atualizarUsuario(utilUsuarioTestUtil.criarUsuario());
 
         verify(usuarioRepository, Mockito.times(1)).save(any());
         Assertions.assertThat(usuarioAtualizado.getId()).isEqualTo(testsUtil.getUiidPadrao());

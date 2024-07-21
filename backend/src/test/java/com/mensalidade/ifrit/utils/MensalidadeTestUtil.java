@@ -9,10 +9,10 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-public class MensalidadeTest {
+public class MensalidadeTestUtil {
     TestsUtil testsUtil = new TestsUtil();
-    ClienteTest clienteTest = new ClienteTest();
-    EmpresaTest empresaTest = new EmpresaTest();
+    ClienteTestUtil clienteTestUtil = new ClienteTestUtil();
+    EmpresaTestUtil empresaTestUtil = new EmpresaTestUtil();
 
     private final String DESCRICAO_PADRAO = "Mensalidade Teste 1";
     private final Date DATE_PADRAO = new Date(124, Calendar.JULY, 20); // 20/07/2024
@@ -21,7 +21,7 @@ public class MensalidadeTest {
     public MensalidadeDto criarMensalidade() {
         MensalidadeDto dto = new MensalidadeDto();
         dto.setId(testsUtil.getUiidPadrao());
-        dto.setCliente(clienteTest.criarCliente());
+        dto.setCliente(clienteTestUtil.criarCliente());
         dto.setDescricao(DESCRICAO_PADRAO);
         dto.setEmissao(DATE_PADRAO);
         dto.setVencimento(DATE_PADRAO);
@@ -33,10 +33,10 @@ public class MensalidadeTest {
         return Arrays.asList(
                 new Mensalidade(testsUtil.getUiidPadrao(), VALOR_PADRAO,
                         DESCRICAO_PADRAO, DATE_PADRAO, DATE_PADRAO,
-                        empresaTest.empresaPadrao(), clienteTest.clientes().get(0), "obs 1"),
+                        empresaTestUtil.empresaPadrao(), clienteTestUtil.clientes().get(0), "obs 1"),
                 new Mensalidade(testsUtil.getUiidDiferente(), new BigDecimal("200.0"),
                         "Descrição 2", new Date(), new Date(),
-                        empresaTest.empresaPadrao(), clienteTest.clientes().get(1), "obs 2")
+                        empresaTestUtil.empresaPadrao(), clienteTestUtil.clientes().get(1), "obs 2")
 
         );
     }

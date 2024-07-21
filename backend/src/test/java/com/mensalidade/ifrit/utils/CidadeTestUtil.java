@@ -10,7 +10,7 @@ import com.mensalidade.ifrit.requests.CidadeIbgeUtil.UF;
 import java.util.Arrays;
 import java.util.List;
 
-public class CidadeTest {
+public class CidadeTestUtil {
     TestsUtil testsUtil = new TestsUtil();
 
     public CidadeDto criarCidade(){

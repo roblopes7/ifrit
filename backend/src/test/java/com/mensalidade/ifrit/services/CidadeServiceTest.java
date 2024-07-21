@@ -6,7 +6,7 @@ import com.mensalidade.ifrit.models.Cidade;
 import com.mensalidade.ifrit.repositories.CidadeRepository;
 import com.mensalidade.ifrit.requests.CidadeIbgeRequest;
 import com.mensalidade.ifrit.services.exceptions.ObjetoNaoEncontrado;
-import com.mensalidade.ifrit.utils.CidadeTest;
+import com.mensalidade.ifrit.utils.CidadeTestUtil;
 import com.mensalidade.ifrit.utils.TestsUtil;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -39,7 +39,7 @@ class CidadeServiceTest {
 
     private final String CIDADE_NAO_ENCONTRADA = "Cidade não encontrada.";
     private final String IBGE_URI = "https://servicodados.ibge.gov.br/api/v1/localidades/municipios";
-    CidadeTest utilCidadeTest = new CidadeTest();
+    CidadeTestUtil utilCidadeTestUtil = new CidadeTestUtil();
     TestsUtil testsUtil = new TestsUtil();
 
     @Mock
@@ -69,7 +69,7 @@ class CidadeServiceTest {
     void cadastrarCidade() {
         when(cidadeRepository.save(any(Cidade.class)))
                 .thenReturn(new Cidade(testsUtil.getUiidPadrao(), "Cidade Teste", "Brasil", "PR"));
-        CidadeDto cidadeCadastrada = cidadeService.cadastrarCidade(utilCidadeTest.criarCidade());
+        CidadeDto cidadeCadastrada = cidadeService.cadastrarCidade(utilCidadeTestUtil.criarCidade());
 
         verify(cidadeRepository, Mockito.times(1)).save(any());
         Assertions.assertThat(cidadeCadastrada.getId()).isEqualTo(testsUtil.getUiidPadrao());
@@ -78,7 +78,7 @@ class CidadeServiceTest {
     @Test
     @DisplayName("Trazer cidades paginadas")
     void carregarTodasCidades() {
-        Page<Cidade> cidadePage = new PageImpl<>(utilCidadeTest.cidades(), testsUtil.getPagePadrao(), utilCidadeTest.cidades().size());
+        Page<Cidade> cidadePage = new PageImpl<>(utilCidadeTestUtil.cidades(), testsUtil.getPagePadrao(), utilCidadeTestUtil.cidades().size());
         when(cidadeRepository.findAll(any(Pageable.class))).thenReturn(cidadePage);
 
         Page<CidadeDto> result = cidadeService.carregarTodasCidades(testsUtil.getPagePadrao());
@@ -106,7 +106,7 @@ class CidadeServiceTest {
     @Test
     @DisplayName("Consultar Cidade por id")
     void consultarCidadePorId() {
-        Optional<Cidade> cidade = Optional.ofNullable(modelMapper.map(utilCidadeTest.criarCidade(), Cidade.class));
+        Optional<Cidade> cidade = Optional.ofNullable(modelMapper.map(utilCidadeTestUtil.criarCidade(), Cidade.class));
         when(cidadeRepository.findById(testsUtil.getUiidPadrao())).thenReturn(cidade);
 
         CidadeDto resultado = cidadeService.consultarCidadePorId(testsUtil.getUiidPadrao());
@@ -150,9 +150,9 @@ class CidadeServiceTest {
     void removerCidade() {
         when(cidadeRepository.save(any(Cidade.class)))
                 .thenReturn(new Cidade(testsUtil.getUiidPadrao(), "Cidade Teste", "Brasil", "PR"));
-        CidadeDto cidadeCadastrada = cidadeService.cadastrarCidade(utilCidadeTest.criarCidade());
+        CidadeDto cidadeCadastrada = cidadeService.cadastrarCidade(utilCidadeTestUtil.criarCidade());
 
-        Optional<Cidade> cidade = Optional.ofNullable(modelMapper.map(utilCidadeTest.criarCidade(), Cidade.class));
+        Optional<Cidade> cidade = Optional.ofNullable(modelMapper.map(utilCidadeTestUtil.criarCidade(), Cidade.class));
         when(cidadeRepository.findById(testsUtil.getUiidPadrao())).thenReturn(cidade);
 
         cidadeService.removerCidade(testsUtil.getUiidPadrao());
@@ -163,7 +163,7 @@ class CidadeServiceTest {
     @Test
     @DisplayName("Consultar IBGE")
     public void consultarCidadesPeloIbge() {
-        CidadeIbgeRequest[] cidadesIbge = utilCidadeTest.cidadesIbge();
+        CidadeIbgeRequest[] cidadesIbge = utilCidadeTestUtil.cidadesIbge();
 
         when(ibgeConfig.getUriIBGE())
                 .thenReturn(IBGE_URI);

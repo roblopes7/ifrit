@@ -1,7 +1,7 @@
 package com.mensalidade.ifrit.services;
 
 import com.mensalidade.ifrit.repositories.UsuarioRepository;
-import com.mensalidade.ifrit.utils.UsuarioTest;
+import com.mensalidade.ifrit.utils.UsuarioTestUtil;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -18,7 +18,7 @@ import static org.mockito.Mockito.when;
 
 public class AuthServiceTest {
 
-    UsuarioTest utilUsuarioTest = new UsuarioTest();
+    UsuarioTestUtil utilUsuarioTestUtil = new UsuarioTestUtil();
 
     @Mock
     private UsuarioRepository usuarioRepository;
@@ -36,10 +36,10 @@ public class AuthServiceTest {
     @Test
     @DisplayName("Carregar Usuario com sucesso")
     void loginUsuario() {
-        String login = utilUsuarioTest.criarUsuario().getLogin().toUpperCase();
+        String login = utilUsuarioTestUtil.criarUsuario().getLogin().toUpperCase();
         when(usuarioRepository.findByLogin(login))
-                .thenReturn(utilUsuarioTest.usuarios().get(0));
-        UserDetails usuario = authService.loadUserByUsername(utilUsuarioTest.criarUsuario().getLogin());
+                .thenReturn(utilUsuarioTestUtil.usuarios().get(0));
+        UserDetails usuario = authService.loadUserByUsername(utilUsuarioTestUtil.criarUsuario().getLogin());
 
         verify(usuarioRepository, Mockito.times(1)).findByLogin(login);
         Assertions.assertThat(usuario.getUsername()).isEqualTo(login);
