@@ -1,0 +1,22 @@
+<div class="table-wrapper">
+  <div class="table-container">
+    <mat-table [dataSource]="dataSource" class="mat-elevation-z8 conteudo">
+      <ng-container *ngFor="let column of columns" [matColumnDef]="column.key">
+        <mat-header-cell *matHeaderCellDef> {{ column.header }} </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{ element[column.key] }} </mat-cell>
+      </ng-container>
+
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+    </mat-table>
+  </div>
+
+  <mat-paginator
+    [length]="data.totalElements"
+    [pageSize]="pageSize"
+    [pageSizeOptions]="[20, 50, 100]"
+    showFirstLastButtons
+    aria-label="Select page"
+  >
+  </mat-paginator>
+</div>
