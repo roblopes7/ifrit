@@ -1,0 +1,14 @@
+<div class="container">
+  <form class="form">
+    <mat-form-field class="login-input full-width">
+      <mat-label>Login</mat-label>
+      <input [(ngModel)]="login.login" required name="login" matInput />
+    </mat-form-field>
+    <br />
+    <mat-form-field class="login-input full-width">
+      <mat-label>Senha</mat-label>
+      <input [(ngModel)]="login.senha" required name="senha" matInput type="password" />
+    </mat-form-field>
+    <button (click)="onLogin()" [disabled]="!validarCampos()" mat-fab extended color="primary" class="full-width" >Entrar</button>
+  </form>
+</div>

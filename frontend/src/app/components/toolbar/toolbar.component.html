@@ -1,0 +1,13 @@
+<mat-toolbar color="primary">
+  <span>{{ pageTitle }}</span>
+  <div class="menu">
+    <button mat-button>Mensalidades</button>
+    <button mat-button>Faturas</button>
+    <button mat-button>Empresas</button>
+    <button mat-button>Clientes</button>
+    <button mat-button>Usuários</button>
+    <button mat-button routerLink="cidades">Cidades</button>
+    <button mat-button (click)="logout()">Logout</button>
+  </div>
+</mat-toolbar>
+<router-outlet></router-outlet>

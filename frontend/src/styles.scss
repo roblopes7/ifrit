@@ -2,6 +2,12 @@
 
 @include mat.core();
 
+:root {
+  --primary-red: #f44336;
+  --secondary-white: #ffffff;
+
+}
+
 $my-primary: mat.define-palette(mat.$red-palette, 700);
 $my-accent: mat.define-palette(mat.$blue-gray-palette, 900);
 $my-warning: mat.define-palette(mat.$yellow-palette, 500);

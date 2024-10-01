@@ -1,0 +1,27 @@
+.conteudo {
+  max-height: 70vh; /* Limita a altura a 70% da altura da viewport */
+  padding: 20px; /* Espaço interno no card */
+  margin: 20px; /* Espaço externo ao redor do card */
+  overflow: hidden; /* Oculta o overflow para o container externo */
+  border: 1px solid #e0e0e0; /* Borda opcional */
+  border-radius: 8px; /* Cantos arredondados */
+  box-shadow: 0px 3px 3px -2px rgba(0, 0, 0, 0.2),
+              0px 3px 4px 0px rgba(0, 0, 0, 0.14),
+              0px 1px 8px 0px rgba(0, 0, 0, 0.12); /* Sombra do Angular Material */
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background-color: #ffffff; /* Cor de fundo opcional */
+}
+
+.mat-toolbar {
+  margin-bottom: 20px; /* Espaço entre a toolbar e o card */
+}
+
+/* Responsividade para telas menores */
+@media (max-width: 768px) {
+  .conteudo {
+    padding: 10px;
+    margin: 10px;
+  }
+}
