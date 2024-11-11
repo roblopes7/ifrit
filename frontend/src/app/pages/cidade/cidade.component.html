@@ -1,3 +1,96 @@
-<mat-card class="conteudo">
-  <app-data-table [columns]="colunas" [data]="cidades"></app-data-table>
-</mat-card>
+<div class="conteudo">
+  <!-- Campo de filtro acima da tabela -->
+  <div class="filter">
+    <mat-form-field class="filter-input">
+      <mat-label>Filtro</mat-label>
+      <input
+        matInput
+        (keyup)="applyFilter($event)"
+        placeholder="Digite para filtrar"
+        #input
+      />
+    </mat-form-field>
+
+    <button
+      mat-fab
+      extended
+      color="primary"
+      class="filter-button"
+      (click)="consultarIBGE()"
+    >
+      <mat-icon>search</mat-icon>
+      Filtrar
+    </button>
+  </div>
+
+  <!-- Contêiner da tabela e do paginador -->
+  <div class="table-wrapper mat-elevation-z8">
+    <!-- Contêiner de rolagem da tabela -->
+    <div class="table-container">
+      <table mat-table [dataSource]="dataSource" matSort>
+        <!-- Coluna ID -->
+        <ng-container matColumnDef="id">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Código IBGE</th>
+          <td mat-cell *matCellDef="let row">{{ row.id }}</td>
+        </ng-container>
+
+        <!-- Coluna Nome -->
+        <ng-container matColumnDef="nome">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Nome</th>
+          <td mat-cell *matCellDef="let row">{{ row.nome }}</td>
+        </ng-container>
+
+        <!-- Coluna País -->
+        <ng-container matColumnDef="pais">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>País</th>
+          <td mat-cell *matCellDef="let row">{{ row.pais }}</td>
+        </ng-container>
+
+        <!-- Coluna UF -->
+        <ng-container matColumnDef="uf">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>UF</th>
+          <td mat-cell *matCellDef="let row">{{ row.uf }}</td>
+        </ng-container>
+
+        <!-- Cabeçalho da tabela -->
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+
+        <!-- Linhas da tabela -->
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+
+        <!-- Linha exibida quando não há dados correspondentes -->
+        <tr class="mat-row" *matNoDataRow>
+          <td class="mat-cell" colspan="4">
+            Nenhum registro encontrado com o filtro "{{ input.value }}"
+          </td>
+        </tr>
+      </table>
+    </div>
+
+    <!-- Paginador sempre visível abaixo da tabela -->
+    <mat-paginator
+      [length]="totalElements"
+      [pageSize]="pageSize"
+      [pageSizeOptions]="[10, 25, 50]"
+      showFirstLastButtons
+      [pageIndex]="pageIndex"
+      aria-label="Select page"
+      (page)="onPageChange($event)"
+      class="paginator"
+    >
+    </mat-paginator>
+  </div>
+  <button
+    mat-fab
+    extended
+    color="primary"
+    class="ibge-button"
+    (click)="consultarIBGE()"
+  >
+    Consultar IBGE
+  </button>
+
+  <div *ngIf="isLoading" class="loading-overlay">
+    <mat-progress-spinner mode="indeterminate" color="primary"></mat-progress-spinner>
+  </div>
+</div>

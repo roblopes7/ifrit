@@ -16,20 +16,31 @@ export class CidadeService {
   private readonly TOKEN: string = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJpZnJpdCIsInN1YiI6IkFETUlOIiwiZXhwIjoxNzIyMzY1MjExfQ.U3p_ETp_0Qaj70oFM5fay6yMEy1w7pKh0Tom6Utaiiw"
   constructor(private http: HttpClient) { }
 
-  list(pageParams: Partial<PageParams> = {}){
+  list(filter:  string, pageParams: Partial<PageParams> = {}){
     const finalParams = getDefaultPageParams(pageParams);
 
     const params = new HttpParams()
       .set('direction', finalParams.direction)
       .set('linesPerPage', finalParams.linesPerPage.toString())
       .set('orderBy', finalParams.orderBy)
-      .set('page', finalParams.page.toString());
+      .set('page', finalParams.page.toString())
+      .set('filter', filter);
 
     let headers = new HttpHeaders();
     headers = headers.append('Authorization', this.TOKEN);
     headers = headers.append('x-Flatten', 'true');
     headers = headers.append('Content-Type', 'application/json');
 
-    return this.http.get<DataTableResponseData<Cidade>>(`${API_CONFIG.baseUrl}${this.API}/lista`, { headers, params });
+    return this.http.get<DataTableResponseData<Cidade>>(`${API_CONFIG.baseUrl}${this.API}/filtro`, { headers, params });
+  }
+
+  updateIbge(){
+    const params = new HttpParams();
+    let headers = new HttpHeaders();
+    headers = headers.append('Authorization', this.TOKEN);
+    headers = headers.append('x-Flatten', 'true');
+    headers = headers.append('Content-Type', 'application/json');
+
+    return this.http.post(`${API_CONFIG.baseUrl}${this.API}/consultar-ibge`, { headers, params });
   }
 }

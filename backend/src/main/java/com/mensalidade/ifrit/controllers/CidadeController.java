@@ -40,15 +40,16 @@ public class CidadeController {
         return ResponseEntity.created(uri).body(dto);
     }
 
-    @GetMapping("/lista")
+    @GetMapping("/filtro")
     @Operation(summary = "Listar cidades", method = "GET")
     public ResponseEntity<Page<CidadeDto>> listarCidades(
+            @RequestParam(value = "filter", required = false) String filtro,
             QueryParamRequest paramRequest
     ) {
         Page<CidadeDto> responsePage;
         try {
             PageRequest pageRequest = PageRequest.of(paramRequest.getPage(), paramRequest.getLinesPerPage(), Sort.Direction.valueOf(paramRequest.getDirection()), paramRequest.getOrderBy());
-            responsePage = cidadeService.carregarTodasCidades(pageRequest);
+            responsePage = cidadeService.consultarCidades(filtro, pageRequest);
         } catch (Exception ex) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -68,7 +69,7 @@ public class CidadeController {
 
     //Operação post por buscar na base do IBGE e cadastrar/atualizar cidades
     @PostMapping("/consultar-ibge")
-    @Operation(summary = "Consultar cidades pelo IBGE", method = "GET")
+    @Operation(summary = "Consultar cidades pelo IBGE", method = "POST")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<Void> consultarCidadesPeloIbge(){
         cidadeService.consultarCidadesPeloIbge();

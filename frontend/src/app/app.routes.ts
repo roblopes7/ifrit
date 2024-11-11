@@ -24,6 +24,14 @@ export const routes: Routes = [
             (m) => m.CidadeComponent
           ),
       },
+      {
+        path: 'usuarios',
+        data: { title: 'Usuários' },
+        loadComponent: () =>
+          import('./pages/usuarios/usuarios.component').then(
+            (m) => m.UsuariosComponent
+          ),
+      },
     ],
   },
 ];

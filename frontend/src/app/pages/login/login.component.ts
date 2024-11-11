@@ -38,7 +38,6 @@ export class LoginComponent {
 
   onLogin() {
     this.loginService.login(this.login).subscribe(response => {
-      console.log(response)
       if(response.body == null) {
         this.toast.error('Token não encontrado')
         return;

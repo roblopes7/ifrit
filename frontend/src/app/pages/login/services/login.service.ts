@@ -13,7 +13,6 @@ export class LoginService {
   constructor(private http: HttpClient) { }
 
   login(login: Login) {
-    console.log(login)
     return this.http.post(`${API_CONFIG.baseUrl}${this.API}/login`, login, {
       observe: 'response',
       responseType: 'text'

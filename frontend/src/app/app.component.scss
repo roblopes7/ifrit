@@ -1,0 +1,16 @@
+mat-toolbar {
+  border-radius: 0 0 8px 8px ;
+}
+
+.menu {
+  margin-left: auto;
+}
+
+.menu button {
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.menu button:hover {
+  background-color: var(--secondary-white);
+  color: var(--primary-red);
+}

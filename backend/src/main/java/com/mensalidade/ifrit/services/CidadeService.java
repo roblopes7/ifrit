@@ -4,11 +4,12 @@ import com.mensalidade.ifrit.config.IBGEConfig;
 import com.mensalidade.ifrit.dto.CidadeDto;
 import com.mensalidade.ifrit.models.Cidade;
 import com.mensalidade.ifrit.repositories.CidadeRepository;
+import com.mensalidade.ifrit.repositories.specifications.CidadeSpecification.*;
 import com.mensalidade.ifrit.requests.CidadeIbgeRequest;
 import com.mensalidade.ifrit.services.exceptions.ObjetoNaoEncontrado;
+import org.apache.commons.lang3.StringUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -17,6 +18,8 @@ import org.springframework.web.client.RestTemplate;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.mensalidade.ifrit.repositories.specifications.CidadeSpecification.*;
+import static org.springframework.data.jpa.domain.Specification.where;
 @Service
 public class CidadeService {
 
@@ -78,5 +81,23 @@ public class CidadeService {
     public CidadeIbgeRequest[] consultarIBGE() {
         RestTemplate restTemplate = new RestTemplate();
         return restTemplate.getForObject(ibgeConfig.getUriIBGE(), CidadeIbgeRequest[].class);
+    }
+
+    public Page<CidadeDto> consultarCidades(String filtro, Pageable pageable) {
+        if(StringUtils.isEmpty(filtro)){
+            return carregarTodasCidades(pageable);
+        }
+
+        return filtrarCidades(filtro, pageable);
+    }
+
+    private Page<CidadeDto> filtrarCidades(String filtro, Pageable pageable) {
+        return cidadeRepository
+                .findAll(where(isIdEqualsTo(filtro))
+                                .or(isNomeEqualsTo(filtro))
+                                .or(isUFEqualsTo(filtro))
+                                .or(isPaisEqualsTo(filtro))
+                        , pageable)
+                .map(cidade -> modelMapper.map(cidade, CidadeDto.class));
     }
 }
