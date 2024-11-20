@@ -157,7 +157,7 @@ class CidadeServiceTest {
 
         cidadeService.removerCidade(testsUtil.getUiidPadrao());
 
-        verify(cidadeRepository, Mockito.times(1)).delete(any());
+        verify(cidadeRepository, Mockito.times(1)).delete(any(Cidade.class));
     }
 
     @Test

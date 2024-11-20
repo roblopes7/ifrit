@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, SimpleChanges, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -31,6 +31,8 @@ export class CidadeComponent implements OnInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort)
   sort!: MatSort;
+
+  @ViewChild('input') inputElement!: ElementRef;
 
   isLoading = false;
 
@@ -83,12 +85,15 @@ export class CidadeComponent implements OnInit {
     }
   }
 
-  consultar(filter: string, pageParams: Partial<PageParams> = {}) {
+  consultar() {
+    const pageParams: Partial<PageParams> = {};
+    const filter = this.inputElement.nativeElement.value;
     this.cidadeService.list(filter, pageParams).subscribe(data => {
       this.dataSource.data = data.content;
       this.totalElements = data.totalElements;  // Atualiza o total de elementos
     });
   }
+
   consultarIBGE() {
     this.isLoading = true;
     this.cidadeService.updateIbge().subscribe({

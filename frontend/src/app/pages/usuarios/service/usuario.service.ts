@@ -5,17 +5,17 @@ import { getDefaultPageParams } from '../../../components/data-table/models/defa
 import { PageParams } from '../../../components/data-table/models/pageParams';
 import { API_CONFIG } from '../../../config/api.config';
 import { DataTableResponseData } from '../../../models/DataTableResponse';
-import { Cidade } from '../cidade';
+import { Usuario } from '../models/usuario';
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
-export class CidadeService {
+export class UsuarioService {
 
-  private readonly API: string =  "/cidades"
+  private readonly API: string =  "/usuarios"
   constructor(private http: HttpClient) { }
 
-  list(filter:  string, pageParams: Partial<PageParams> = {}){
+  list(filter:  string, mostrarInativos: boolean, pageParams: Partial<PageParams> = {}){
     const finalParams = getDefaultPageParams(pageParams);
 
     const params = new HttpParams()
@@ -23,23 +23,26 @@ export class CidadeService {
       .set('linesPerPage', finalParams.linesPerPage.toString())
       .set('orderBy', finalParams.orderBy)
       .set('page', finalParams.page.toString())
+      .set('inativos', mostrarInativos)
       .set('filter', filter);
 
     let headers = new HttpHeaders();
-    //headers = headers.append('Authorization', this.TOKEN);
     headers = headers.append('x-Flatten', 'true');
     headers = headers.append('Content-Type', 'application/json');
 
-    return this.http.get<DataTableResponseData<Cidade>>(`${API_CONFIG.baseUrl}${this.API}/filtro`, { headers, params });
+    return this.http.get<DataTableResponseData<Usuario>>(`${API_CONFIG.baseUrl}${this.API}/filtro`, { headers, params });
   }
 
-  updateIbge(){
-    const params = new HttpParams();
-    let headers = new HttpHeaders();
-    //headers = headers.append('Authorization', this.TOKEN);
-    headers = headers.append('x-Flatten', 'true');
-    headers = headers.append('Content-Type', 'application/json');
+  upsert(usuario: Usuario) {
+    const url = `${API_CONFIG.baseUrl}${this.API}${usuario.id ? `/${usuario.id}` : ''}`;
+    console.log('URL:', url);
+    console.log('Usuário:', usuario);
 
-    return this.http.post(`${API_CONFIG.baseUrl}${this.API}/consultar-ibge`, { headers, params });
+    if (usuario.id) {
+      return this.http.put<Usuario>(url, usuario);
+    } else {
+      return this.http.post<Usuario>(url, usuario);
+    }
   }
+
 }

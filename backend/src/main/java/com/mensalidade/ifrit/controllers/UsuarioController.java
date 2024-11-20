@@ -1,7 +1,5 @@
 package com.mensalidade.ifrit.controllers;
 
-import com.mensalidade.ifrit.dto.CidadeDto;
-import com.mensalidade.ifrit.dto.EmpresaDto;
 import com.mensalidade.ifrit.dto.request.UsuarioRequest;
 import com.mensalidade.ifrit.dto.response.UsuarioCompletoResponse;
 import com.mensalidade.ifrit.dto.response.UsuarioResponse;
@@ -52,15 +50,17 @@ public class UsuarioController {
         return new ResponseEntity<>(response.add(linkTo(methodOn(EmpresaController.class).consultarEmpresaPorId(id)).withSelfRel()), HttpStatus.OK);
     }
 
-    @GetMapping("/lista")
+    @GetMapping("/filtro")
     @Operation(summary = "Listar usuários", method = "GET")
-    public ResponseEntity<Page<UsuarioResponse>> listarUsuarios(
+    public ResponseEntity<Page<UsuarioCompletoResponse>> listarUsuarios(
+            @RequestParam(value = "filter", required = false) String filtro,
+            @RequestParam(value = "inativos", required = false) Boolean inativos,
             QueryParamRequest paramRequest
     ) {
-        Page<UsuarioResponse> responsePage;
+        Page<UsuarioCompletoResponse> responsePage;
         try {
             PageRequest pageRequest = PageRequest.of(paramRequest.getPage(), paramRequest.getLinesPerPage(), Sort.Direction.valueOf(paramRequest.getDirection()), paramRequest.getOrderBy());
-            responsePage = usuarioService.listarTodosUsuarios(pageRequest);
+            responsePage = usuarioService.consultarUsuarios(filtro, inativos, pageRequest);
         } catch (Exception ex) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }

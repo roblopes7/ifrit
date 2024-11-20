@@ -1,0 +1,47 @@
+.conteudo {
+  padding: 16px;
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px; /* Espaçamento entre os itens */
+  //margin-bottom: 10px; /* Espaçamento entre as linhas */
+}
+
+.full-width {
+  flex: 1 1 100%; /* O componente ocupa 100% da largura */
+}
+
+.quarter-width {
+  flex: 0 1 50%; /* O campo 'Perfil' ocupa metade da linha */
+  max-width: 50%; /* Evita que o campo ultrapasse a largura */
+}
+
+.half-width {
+  flex: 1 1 calc(50% - 16px); /* Cada componente ocupa metade da largura, com espaçamento */
+}
+
+.eighty-width {
+  flex: 1 1 calc(80% - 16px); /* Cada componente ocupa metade da largura, com espaçamento */
+}
+
+.toggle-ativo {
+  display: flex;
+  align-items: center;
+  margin-left: 0; /* Remove margem desnecessária */
+  margin-top: 0; /* Remove qualquer margem extra */
+  margin-right: 0; /* Remove margem à direita */
+  padding-left: 8px; /* Garante que o toggle fique bem colado ao input */
+  padding-right: 0; /* Sem espaçamento extra no lado direito */
+}
+
+/* Ajuste na largura do mat-slide-toggle se necessário */
+mat-slide-toggle {
+  min-width: 75px; /* Ajusta a largura do toggle */
+}
+
+.buttons {
+  display: flex;
+  justify-content: flex-end;
+}

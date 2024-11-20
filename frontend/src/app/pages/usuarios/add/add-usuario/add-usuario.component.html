@@ -1,0 +1,100 @@
+<div class="conteudo">
+  <h1 mat-dialog-title color="primary">Registro de Usuário</h1>
+  <div mat-dialog-content>
+    <form [formGroup]="form">
+      <!-- Row: Nome -->
+      <div class="row">
+        <mat-form-field appearance="fill" class="eighty-width">
+          <mat-label>Nome</mat-label>
+          <input matInput formControlName="nome" />
+          <mat-error *ngIf="form.get('nome')?.invalid">
+            Nome é obrigatório
+          </mat-error>
+        </mat-form-field>
+
+        <mat-slide-toggle class="toggle-ativo" [checked]="ativo" color="primary">
+          Ativo
+        </mat-slide-toggle>
+
+      </div>
+
+      <!-- Row: Perfil e Ativo -->
+      <div class="row">
+        <mat-form-field appearance="fill" class="half-width">
+          <mat-label>Login</mat-label>
+          <input matInput formControlName="login" />
+          <mat-error *ngIf="form.get('login')?.invalid">
+            Login é obrigatório
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill" class="half-width">
+          <mat-label>Perfil</mat-label>
+          <mat-select formControlName="perfil">
+            <mat-option *ngFor="let perfil of perfis" [value]="perfil.key">
+              {{ perfil.value }}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="form.get('perfil')?.invalid">
+            Perfil obrigatório
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+      <!-- Row: Senha e Confirmar Senha -->
+      <div class="row">
+        <mat-form-field appearance="fill" class="half-width">
+          <mat-label>Senha</mat-label>
+          <input formControlName="senha" matInput [type]="senha() ? 'password' : 'text'" />
+          <button mat-icon-button matSuffix (click)="mostraSenha($event)">
+            <mat-icon>{{ senha() ? "visibility_off" : "visibility" }}</mat-icon>
+          </button>
+          <mat-error *ngIf="form.get('senha')?.invalid">
+            Senha obrigatória
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill" class="half-width">
+          <mat-label>Confirmar Senha</mat-label>
+          <input formControlName="confirmarSenha" matInput [type]="confirmarSenha() ? 'password' : 'text'" />
+          <button mat-icon-button matSuffix (click)="mostraConfirmarSenha($event)">
+            <mat-icon>{{ confirmarSenha() ? "visibility_off" : "visibility" }}</mat-icon>
+          </button>
+          <mat-error *ngIf="form.get('confirmarSenha')?.invalid">
+            Confirmar Senha é obrigatória
+          </mat-error>
+          <mat-error *ngIf="form.hasError('senhasNaoCorrespondem')">
+            As senhas não correspondem.
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+      <!-- Row: Email -->
+      <div class="row">
+        <mat-form-field appearance="fill" class="full-width">
+          <mat-label>Email</mat-label>
+          <input matInput formControlName="email" />
+        </mat-form-field>
+      </div>
+
+      <div class="row">
+        <mat-form-field appearance="fill" class="half-width">
+          <mat-label>Telefone</mat-label>
+          <input matInput formControlName="telefone" type="tel" telefoneMask />
+        </mat-form-field>
+
+        <mat-form-field appearance="fill" class="half-width">
+          <mat-label>Celular</mat-label>
+          <input matInput formControlName="celular" type="tel" telefoneMask />
+        </mat-form-field>
+      </div>
+
+      <div mat-dialog-actions class="buttons">
+        <button mat-button color="primary" [disabled]="form.invalid" (click)="onSave()">
+          Salvar
+        </button>
+        <button mat-button (click)="onCancel()">Cancelar</button>
+      </div>
+    </form>
+  </div>
+</div>

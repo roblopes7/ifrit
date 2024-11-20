@@ -131,7 +131,7 @@ class UsuarioServiceTest {
         Page<Usuario> usuarioPage = new PageImpl<>(utilUsuarioTestUtil.usuarios(), testsUtil.getPagePadrao(), utilUsuarioTestUtil.usuarios().size());
         when(usuarioRepository.findAll(any(Pageable.class))).thenReturn(usuarioPage);
 
-        Page<UsuarioResponse> result = usuarioService.listarTodosUsuarios(testsUtil.getPagePadrao());
+        Page<UsuarioCompletoResponse> result = usuarioService.listarTodosUsuarios(true, testsUtil.getPagePadrao());
 
 
         assertNotNull(result);
@@ -145,7 +145,7 @@ class UsuarioServiceTest {
         Page<Usuario> usuarioPage = new PageImpl<>(new ArrayList<>(), testsUtil.getPagePadrao(), 0);
         when(usuarioRepository.findAll(any(Pageable.class))).thenReturn(usuarioPage);
 
-        Page<UsuarioResponse> resultado = usuarioService.listarTodosUsuarios(testsUtil.getPagePadrao());
+        Page<UsuarioCompletoResponse> resultado = usuarioService.listarTodosUsuarios(true, testsUtil.getPagePadrao());
 
 
         assertNotNull(resultado);
