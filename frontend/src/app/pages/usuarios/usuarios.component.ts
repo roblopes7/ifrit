@@ -10,6 +10,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 
@@ -17,7 +18,6 @@ import { PageParams } from '../../components/data-table/models/pageParams';
 import { TableData } from '../../components/data-table/models/tableColumn';
 import { AddUsuarioComponent } from './add/add-usuario/add-usuario.component';
 import { UsuarioService } from './service/usuario.service';
-import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 @Component({
   selector: 'app-usuarios',
@@ -25,7 +25,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
   imports: [CommonModule, MatTableModule, MatCardModule, MatSortModule, MatIconModule, MatCheckboxModule, MatSlideToggleModule,
     MatProgressSpinnerModule, MatPaginatorModule, MatFormFieldModule, MatInputModule, MatButtonModule, ReactiveFormsModule],
   templateUrl: './usuarios.component.html',
-  styleUrl: './usuarios.component.scss'
+  styleUrls: ['./usuarios.component.scss', '../../styles/list-styles.scss']
 })
 export class UsuariosComponent {
   @ViewChild(MatPaginator) paginator!: MatPaginator;

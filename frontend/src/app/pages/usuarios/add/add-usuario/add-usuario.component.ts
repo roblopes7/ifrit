@@ -35,7 +35,7 @@ import { UsuarioService } from '../../service/usuario.service';
     TelefoneMaskDirective,
   ],
   templateUrl: './add-usuario.component.html',
-  styleUrl: './add-usuario.component.scss',
+  styleUrls: ['./add-usuario.component.scss', '../../../../styles/add-styles.scss'],
 })
 export class AddUsuarioComponent {
   form: FormGroup;

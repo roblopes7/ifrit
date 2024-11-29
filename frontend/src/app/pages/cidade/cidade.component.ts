@@ -24,7 +24,7 @@ import { CidadeService } from './services/cidade.service';
   imports: [CommonModule, MatTableModule, MatCardModule, MatSortModule, MatIconModule,
      MatProgressSpinnerModule, MatPaginatorModule, MatFormFieldModule, MatInputModule, MatButtonModule],
   templateUrl: './cidade.component.html',
-  styleUrls: ['./cidade.component.scss']
+  styleUrls: ['./cidade.component.scss', '../../styles/list-styles.scss']
 })
 export class CidadeComponent implements OnInit {
 
