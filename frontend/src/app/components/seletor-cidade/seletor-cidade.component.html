@@ -1,0 +1,19 @@
+<mat-form-field class="full-width">
+  <input
+    matInput
+    [formControl]="cidadeControl"
+    [matAutocomplete]="auto"
+    placeholder="Digite para buscar uma cidade"
+    (input)="onInput($event)"
+  />
+  <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+    <mat-option
+      *ngFor="let cidade of cidades"
+      [value]="cidade"
+      (onSelectionChange)="onSelecionarCidade($event.isUserInput ? cidade : null)"
+    >
+      {{ cidade.nome }} - {{ cidade.uf }}
+    </mat-option>
+  </mat-autocomplete>
+</mat-form-field>
+<div *ngIf="isLoading" class="loading">Carregando cidades...</div>

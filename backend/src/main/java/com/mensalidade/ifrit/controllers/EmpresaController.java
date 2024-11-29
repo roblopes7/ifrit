@@ -46,15 +46,16 @@ public class EmpresaController {
         return new ResponseEntity<>(empresaDto.add(linkTo(methodOn(EmpresaController.class).consultarEmpresaPorId(id)).withSelfRel()), HttpStatus.OK);
     }
 
-    @GetMapping("/lista")
+    @GetMapping("/filtro")
     @Operation(summary = "Listagem paginada de empresas", method = "GET")
     public ResponseEntity<Page<EmpresaDto>> listarEmpresas(
+            @RequestParam(value = "filter", required = false) String filtro,
             QueryParamRequest paramRequest
     ) {
         Page<EmpresaDto> responsePage;
         try {
             PageRequest pageRequest = PageRequest.of(paramRequest.getPage(), paramRequest.getLinesPerPage(), Sort.Direction.valueOf(paramRequest.getDirection()), paramRequest.getOrderBy());
-            responsePage = empresaService.carregarTodasEmpresas(pageRequest);
+            responsePage = empresaService.filtrarEmpresas(filtro, pageRequest);
         } catch (Exception ex) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }

@@ -2,6 +2,7 @@ import { Routes } from '@angular/router';
 
 import { authGuard } from './auth/auth.guard';
 import { ToolbarComponent } from './components/toolbar/toolbar.component';
+import { EmpresasComponent } from './pages/empresas/empresas.component';
 
 export const routes: Routes = [
 //  { path: '', pathMatch: 'full', redirectTo: 'login' },
@@ -30,6 +31,14 @@ export const routes: Routes = [
         loadComponent: () =>
           import('./pages/usuarios/usuarios.component').then(
             (m) => m.UsuariosComponent
+          ),
+      },
+      {
+        path: 'empresas',
+        data: { title: 'Empresas' },
+        loadComponent: () =>
+          import('./pages/empresas/empresas.component').then(
+            (m) => m.EmpresasComponent
           ),
       },
     ],

@@ -1,5 +1,6 @@
 package com.mensalidade.ifrit.services;
 
+import com.mensalidade.ifrit.dto.CidadeDto;
 import com.mensalidade.ifrit.dto.EmpresaDto;
 import com.mensalidade.ifrit.models.*;
 import com.mensalidade.ifrit.repositories.EmpresaRepository;
@@ -8,6 +9,9 @@ import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import static com.mensalidade.ifrit.repositories.specifications.EmpresaSpecification.*;
+import static org.springframework.data.jpa.domain.Specification.where;
 
 @Service
 public class EmpresaService {
@@ -84,5 +88,20 @@ public class EmpresaService {
                 .orElseThrow(() -> new ObjetoNaoEncontrado(EMPRESA_NAO_ENCONTRADA));
 
         empresaRepository.delete(empresa);
+    }
+
+    public Page<EmpresaDto> filtrarEmpresas(String filtro,  Pageable pageable) {
+        if( filtro == null || filtro.isEmpty()) {
+          return this.carregarTodasEmpresas(pageable);
+        }
+
+        return empresaRepository.findAll(
+                where(isIdEqualsTo(filtro))
+                        .or(isRazaoSocialEqualsTo(filtro))
+                        .or(isNomeFantasiaEqualsTo(filtro))
+                        .or(isCnpjCpfEqualsTo(filtro))
+                        .or(isResponsavelEqualsTo(filtro))
+                        , pageable)
+                .map(empresa -> modelMapper.map(empresa, EmpresaDto.class));
     }
 }

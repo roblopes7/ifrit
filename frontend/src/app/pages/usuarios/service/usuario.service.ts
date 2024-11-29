@@ -35,8 +35,6 @@ export class UsuarioService {
 
   upsert(usuario: Usuario) {
     const url = `${API_CONFIG.baseUrl}${this.API}${usuario.id ? `/${usuario.id}` : ''}`;
-    console.log('URL:', url);
-    console.log('Usuário:', usuario);
 
     if (usuario.id) {
       return this.http.put<Usuario>(url, usuario);

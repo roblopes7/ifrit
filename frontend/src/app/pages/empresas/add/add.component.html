@@ -1,0 +1,133 @@
+<div class="conteudo">
+  <h1 mat-dialog-title color="primary">Registro de Empresa</h1>
+  <div mat-dialog-content>
+    <form [formGroup]="empresaForm">
+      <!-- abas -->
+      <mat-tab-group>
+        <!-- Aba: Principal -->
+        <mat-tab label="Principal" class="aba">
+          <!-- Row: Razão Social -->
+          <div class="row">
+            <mat-form-field appearance="fill" class="full-width">
+              <mat-label>Razão Social</mat-label>
+              <input matInput formControlName="razaoSocial" />
+            </mat-form-field>
+          </div>
+
+          <!-- Row: Nome Fantasia -->
+          <div class="row">
+            <mat-form-field appearance="fill" class="full-width">
+              <mat-label>Nome Fantasia</mat-label>
+              <input matInput formControlName="nomeFantasia" />
+            </mat-form-field>
+          </div>
+
+          <!-- Row: CPF/CNPJ -->
+          <div class="row">
+            <mat-form-field appearance="fill" class="half-width">
+              <mat-label>Cpf/Cnpj</mat-label>
+              <input matInput formControlName="cnpjCpf" />
+            </mat-form-field>
+          </div>
+
+          <!-- Row: Responsável -->
+          <div class="row">
+            <mat-form-field appearance="fill" class="half-width">
+              <mat-label>Responsável</mat-label>
+              <input matInput formControlName="responsavel" />
+            </mat-form-field>
+          </div>
+        </mat-tab>
+        <!-- Fim Aba Principal -->
+
+        <!-- Aba: Endereço -->
+        <div formGroupName="endereco">
+          <mat-tab label="Endereço" class="aba">
+            <!-- Row: Rua e numero-->
+            <div class="row">
+              <mat-form-field appearance="fill" class="three-quarter-width">
+                <mat-label>Rua/Logradouro</mat-label>
+                <input matInput formControlName="logradouro" />
+              </mat-form-field>
+
+              <mat-form-field appearance="fill" class="quarter-width">
+                <mat-label>Número</mat-label>
+                <input matInput formControlName="numero" />
+              </mat-form-field>
+            </div>
+
+            <!-- Row:bairro -->
+            <div class="row">
+              <mat-form-field appearance="fill" class="full-width">
+                <mat-label>Bairro</mat-label>
+                <input matInput formControlName="bairro" />
+              </mat-form-field>
+            </div>
+
+            <!-- Row:Cidade e CEP -->
+            <div class="row">
+              <app-seletor-cidade
+                class="half-width"
+                [cidadeControl]="cidadeControl"
+                (cidadeSelecionada)="aoSelecionarCidade($event)"
+              ></app-seletor-cidade>
+
+              <mat-form-field appearance="fill" class="half-width">
+                <mat-label>CEP</mat-label>
+                <input matInput formControlName="cep" />
+              </mat-form-field>
+            </div>
+          </mat-tab>
+        </div>
+        <!-- Fim Aba Endereço -->
+
+        <!-- Aba: Contato -->
+        <div formGroupName="contato">
+          <mat-tab label="Contato" class="aba">
+            <!-- Aba: Celular -->
+            <div class="row">
+              <mat-form-field appearance="fill" class="half-width">
+                <mat-label>Celular</mat-label>
+                <input matInput formControlName="celular" />
+              </mat-form-field>
+
+              <mat-form-field appearance="fill" class="half-width">
+                <mat-label>Telefone</mat-label>
+                <input matInput formControlName="telefone" />
+              </mat-form-field>
+            </div>
+
+            <!-- Aba: Email -->
+            <div class="row">
+              <mat-form-field appearance="fill" class="full-width">
+                <mat-label>Email</mat-label>
+                <input matInput formControlName="email" />
+              </mat-form-field>
+            </div>
+
+            <!-- Aba: Responsavel -->
+            <div class="row">
+              <mat-form-field appearance="fill" class="full-width">
+                <mat-label>Responsável</mat-label>
+                <input matInput formControlName="responsavel" />
+              </mat-form-field>
+            </div>
+          </mat-tab>
+          <!-- Fim Aba Contato -->
+        </div>
+      </mat-tab-group>
+
+      <div mat-dialog-actions class="buttons">
+        <button
+          mat-button
+          color="primary"
+          [disabled]="empresaForm.invalid"
+          (click)="onSave()"
+        >
+          Salvar
+        </button>
+        <button mat-button (click)="onCancel()">Cancelar</button>
+      </div>
+    </form>
+  </div>
+</div>
